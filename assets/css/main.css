@@ -85,6 +85,9 @@ input, select, textarea {
 .center-wrap {
 	text-align: center;
 }
+.chinese-infographic {
+	max-width: 100%;
+}
 .hidethis {
 	visibility: hidden;
 }
