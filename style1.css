@@ -64,7 +64,8 @@ h2,.white{
     font-size:0.8rem;
 }
 .book-thoughts {
-    color: #999999;
+    color: black;
+    margin-bottom:40px;
 }
 
 a{
@@ -192,6 +193,7 @@ a{
     }
     #content h3 {
         padding-top: 0;
+        padding-top:30px;
     }
     #content h3:first-child {
         padding-top:20px
