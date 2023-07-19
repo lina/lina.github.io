@@ -64,9 +64,9 @@ h2,.white{
     font-size:0.8rem;
 }
 .book-thoughts {
-    color: #999999;
+    /* color: #999999; */
+    font-style:italic;
 }
-
 a{
     color: #666666;
     text-decoration: none;
@@ -120,10 +120,13 @@ a{
     padding-left: 0;
     /* width: 100px; */
 }
+.goodread-link {
+    text-decoration: underline;
+}
 /* animations / utilities */
 #container a:hover{
     /* font-size: 1.3rem; */
-    text-decoration: underline;
+    text-decoration: none;
     color: #6D6875;
     cursor: pointer;
     transition: 0.2s;
