@@ -6,8 +6,7 @@ const photos = [
     { src: 'bolivia.jpeg', caption: 'Squeezing the rear brake tight! Death Road La Paz Bolivia 2014' },
     { src: 'torres-del-paine.jpeg', caption: 'Sunrise at Torres del Paine! Patagonia Chile 2013' },
     { src: 'volcan-villarrica.jpeg', caption: 'Peak of Volcano Villarrica at 2860m elevation! Chile 2013' },
-    { src: 'balangan-surf.jpeg', caption: 'Surfing at Balangan Beach! Bali Indonesia 2022' },
-    { src: 'react-compile.jpeg', caption: 'Waiting for React to compile! Brisbane Australia 2018' }
+    { src: 'balangan-surf.jpeg', caption: 'Surfing at Balangan Beach! Bali Indonesia 2022' }
 ];
 
 let currentIndex = 0;
