@@ -14,10 +14,10 @@ body, html {
 }
 
 #container {
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     height: 100%;
-    margin:30px;
+    margin:20px;
 }
 p {
     font-size:1rem;
@@ -51,11 +51,12 @@ p {
     font-weight: bold;
 }
 #content {
-    flex-grow: 1;
+    /* flex-grow: 1; */
     /* background-color: #ddd; */
     padding: 20px;
     max-width: 500px;
     padding-top:0;
+    margin:auto;
 }
 h2,.white{
     /* color: #fff; */
@@ -133,7 +134,7 @@ a{
     transition: 0.2s;
 }
 .social-links {
-    height: 100vh;
+    height: 20vh;
 }
 #viewer {
     text-align: center;
@@ -167,9 +168,9 @@ a{
 }
 /* Styles for screens wider than 768px */
 @media screen and (min-width: 768px) {
-    #container {
+    /* #container {
         flex-direction: row;
-    }
+    } */
     #navigation ul {
         text-align: center;
         margin: 40px;
