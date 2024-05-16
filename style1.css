@@ -7,7 +7,7 @@
 body, html {
     margin: 0;
     padding: 0;
-    height: 100%;
+    /* height: 100%; */
     /* letter-spacing: 0.1px; */
     font-family: sans-serif;
     color:rgb(36, 36, 36) 
@@ -17,7 +17,52 @@ body, html {
     /* display: flex;
     flex-direction: column; */
     height: 100%;
-    margin:20px;
+    /* margin:20px; */
+    overflow:hidden;
+    animation: colorCycle 10s linear infinite;
+}
+@keyframes colorCycle {
+    0%   { color: #de8787; }
+    5%   { color: #deab87; }
+    10%  { color: #ded587; }
+    15%  { color: #bede87; }
+    20%  { color: #9bde87; }
+    25%  { color: #87dea0; }
+    30%  { color: #87deb8; }
+    35%  { color: #87dec7; }
+    40%  { color: #87c9de; }
+    45%  { color: #87a5de; }
+    50%  { color: #8a87de; }
+    55%  { color: #9e87de; }
+    60%  { color: #c087de; }
+    65%  { color: #d587de; }
+    70%  { color: #de87d1; }
+    75%  { color: #de87c1; }
+    80%  { color: #de87b4; }
+    85%  { color: #de87a9; }
+    90%  { color: #de878e; }
+    95%  { color: #de8787; }
+    100% { color: #de8787; }
+}
+.background {
+    position: relative;
+    z-index: 1;
+}
+.background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url("iridescent.jpg");
+    opacity: 0.5; /* Adjust opacity level */
+    z-index: -1;
+    /* background-repeat: repeat; */
+    background-position: center;
+    /* background-repeat: repeat-y; */
+    background-size: cover; 
+    /* or contain */
 }
 p {
     font-size:1rem;
@@ -49,6 +94,10 @@ p {
     /* color: #999999; */
     /* font-size:0.9rem; */
     font-weight: bold;
+}
+.inner-container {
+    overflow-y: auto;
+    height: 100vh;
 }
 #content {
     /* flex-grow: 1; */
