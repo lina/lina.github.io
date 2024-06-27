@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Meme-strology</title>
+    <style>
+        :root {
+            --bg-color: #0c0c2a;
+            --text-color: #e0e0ff;
+            --accent-color: #ff61d8;
+            --secondary-color: #4d4dff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle 1s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .section {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: scale(1.02);
+        }
+
+        .section h2 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        #horoscope {
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 97, 216, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        #battle-royale {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .zodiac-char {
+            width: 60px;
+            height: 60px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .zodiac-char:hover {
+            transform: scale(1.1);
+        }
+
+        #clicker-game {
+            text-align: center;
+        }
+
+        #planet {
+            width: 100px;
+            height: 100px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        #planet:active {
+            transform: scale(0.95);
+        }
+
+        #click-count {
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        .emoji-reactions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .emoji:hover {
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .zodiac-char {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cosmic Meme-strology</h1>
+        </header>
+
+        <section id="horoscope" class="section">
+            <h2>Your Daily Meme-o-scope</h2>
+            <p>Loading your cosmic fortune...</p>
+        </section>
+
+        <section id="battle-royale" class="section">
+            <h2>Zodiac Battle Royale</h2>
+            <!-- Zodiac characters will be added here dynamically -->
+        </section>
+
+        <section id="clicker-game" class="section">
+            <h2>Cosmic Clicker</h2>
+            <div id="planet"></div>
+            <div id="click-count">Clicks: 0</div>
+        </section>
+
+        <section id="reactions" class="section">
+            <h2>Zodiac Reactions</h2>
+            <div class="emoji-reactions">
+                <!-- Emoji reactions will be added here dynamically -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const app = {
+            init() {
+                this.generateStars();
+                this.setupHoroscope();
+                this.setupBattleRoyale();
+                this.setupClickerGame();
+                this.setupEmojiReactions();
+                this.setupConstellationTrail();
+            },
+
+            generateStars() {
+                const header = document.querySelector('header');
+                for (let i = 0; i < 50; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.width = `${Math.random() * 3 + 1}px`;
+                    star.style.height = star.style.width;
+                    header.appendChild(star);
+                }
+            },
+
+            setupHoroscope() {
+                const horoscopes = [
+                    "You will encounter a spicy meme today. Approach with caution and a fire extinguisher.",
+                    "Your spirit animal is a keyboard cat. Embrace the melody of your soul.",
+                    "Beware of Rickrolls disguised as financial advice. Trust no link.",
+                    "A Doge will bring you much wow and very fortune. To the moon!",
+                    "You will achieve greatness through the art of the yeet. Throw caution to the wind."
+                ];
+                const horoscopeElement = document.getElementById('horoscope');
+                horoscopeElement.innerHTML = `<p>${horoscopes[Math.floor(Math.random() * horoscopes.length)]}</p>`;
+            },
+
+            setupBattleRoyale() {
+                const zodiacSigns = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+                const battleRoyaleElement = document.getElementById('battle-royale');
+                zodiacSigns.forEach(sign => {
+                    const charElement = document.createElement('div');
+                    charElement.classList.add('zodiac-char');
+                    charElement.textContent = sign;
+                    charElement.addEventListener('click', () => this.fightZodiac(sign));
+                    battleRoyaleElement.appendChild(charElement);
+                });
+            },
+
+            fightZodiac(sign) {
+                const result = Math.random() > 0.5 ? 'won' : 'lost';
+                alert(`Your ${sign} ${result} the cosmic battle!`);
+            },
+
+            setupClickerGame() {
+                const planet = document.getElementById('planet');
+                const clickCount = document.getElementById('click-count');
+                let clicks = 0;
+                planet.addEventListener('click', () => {
+                    clicks++;
+                    clickCount.textContent = `Clicks: ${clicks}`;
+                    this.updatePlanetSize(clicks);
+                });
+            },
+
+            updatePlanetSize(clicks) {
+                const planet = document.getElementById('planet');
+                const size = 100 + Math.min(clicks, 100);
+                planet.style.width = `${size}px`;
+                planet.style.height = `${size}px`;
+            },
+
+            setupEmojiReactions() {
+                const zodiacEmojis = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+                const reactionsElement = document.querySelector('.emoji-reactions');
+                zodiacEmojis.forEach(emoji => {
+                    const emojiElement = document.createElement('span');
+                    emojiElement.classList.add('emoji');
+                    emojiElement.textContent = emoji;
+                    emojiElement.addEventListener('click', () => this.reactWithEmoji(emoji));
+                    reactionsElement.appendChild(emojiElement);
+                });
+            },
+
+            reactWithEmoji(emoji) {
+                const reaction = document.createElement('div');
+                reaction.textContent = emoji;
+                reaction.style.position = 'fixed';
+                reaction.style.left = `${Math.random() * 100}vw`;
+                reaction.style.top = '100vh';
+                reaction.style.fontSize = '3rem';
+                reaction.style.transition = 'all 2s ease-out';
+                document.body.appendChild(reaction);
+
+                setTimeout(() => {
+                    reaction.style.top = '-50px';
+                    reaction.style.opacity = '0';
+                }, 50);
+
+                setTimeout(() => {
+                    document.body.removeChild(reaction);
+                }, 2000);
+            },
+
+            setupConstellationTrail() {
+                const trail = [];
+                const trailLength = 10;
+
+                document.addEventListener('mousemove', (e) => {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    star.style.left = `${e.clientX}px`;
+                    star.style.top = `${e.clientY}px`;
+                    star.style.width = '3px';
+                    star.style.height = '3px';
+                    document.body.appendChild(star);
+
+                    trail.push(star);
+
+                    if (trail.length > trailLength) {
+                        const oldestStar = trail.shift();
+                        document.body.removeChild(oldestStar);
+                    }
+
+                    setTimeout(() => {
+                        star.style.opacity = '0';
+                    }, 100);
+
+                    setTimeout(() => {
+                        document.body.removeChild(star);
+                    }, 1000);
+                });
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
