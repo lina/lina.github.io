@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional* Meeting Excuse Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .excuse-type {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .type-btn {
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            border-radius: 0.5rem;
+            color: #60a5fa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .type-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .type-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2rem;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .result {
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .result.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .excuse {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-value {
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            border-radius: 0.5rem;
+            color: #60a5fa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: none;
+        }
+
+        .copy-btn.visible {
+            display: block;
+        }
+
+        .copy-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .professional-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .rating-star {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Meeting Excuse Generator</h1>
+        <p class="subtitle">Professionally* Crafted Reasons for Absence</p>
+
+        <div class="excuse-type">
+            <button class="type-btn active" data-type="tech">Tech Issues</button>
+            <button class="type-btn" data-type="personal">Personal</button>
+            <button class="type-btn" data-type="pets">Pet Related</button>
+            <button class="type-btn" data-type="bizarre">Bizarre</button>
+        </div>
+
+        <button class="generate-btn" onclick="generateExcuse()">Generate Professional* Excuse</button>
+
+        <div class="result" id="result">
+            <div class="excuse" id="excuse"></div>
+            <div class="professional-rating">
+                Professionalism Rating: <span id="rating"></span>
+            </div>
+            <div class="meta">
+                <div class="meta-item">
+                    <div class="meta-label">Reuse Cooldown</div>
+                    <div class="meta-value" id="cooldown"></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Believability</div>
+                    <div class="meta-value" id="believability"></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Sympathy Factor</div>
+                    <div class="meta-value" id="sympathy"></div>
+                </div>
+            </div>
+        </div>
+
+        <button class="copy-btn" id="copyBtn" onclick="copyExcuse()">
+            Copy to Clipboard (Use Responsibly*)
+        </button>
+
+        <footer>
+            * The term "Professional" is used very, very loosely here.
+            <br>
+            ** We take no responsibility for any career implications.
+        </footer>
+    </div>
+
+    <script>
+        const excuses = {
+            tech: [
+                "My Docker container is having an existential crisis.",
+                "My keyboard only types in hieroglyphics today.",
+                "My neural network became self-aware and is now taking a mental health day.",
+                "My cloud storage ascended to a higher plane of existence.",
+                "My IDE decided to become a text adventure game.",
+                "All my semicolons escaped from their files.",
+                "My git repository has trust issues after a bad merge."
+            ],
+            personal: [
+                "I've been recruited for a secret mission by time-traveling developers.",
+                "My rubber duck debugger staged an intervention.",
+                "I need to alphabetize my binary trees.",
+                "My coffee maker is currently running Windows Vista.",
+                "I'm stuck in an infinite loop of getting ready.",
+                "My brain needs a hard reset after last night's deployment."
+            ],
+            pets: [
+                "My cat is pair programming with me and we're in a deadlock.",
+                "My dog ate my SSL certificates.",
+                "My pet goldfish is teaching me COBOL.",
+                "My hamster is attempting to optimize my room's CPU (Chaos Per Unit).",
+                "My cat deployed to production without code review."
+            ],
+            bizarre: [
+                "A temporal paradox in my local timezone requires my immediate attention.",
+                "My quantum computer has entangled itself with my coffee maker.",
+                "The aliens who maintain our legacy code need an urgent code review.",
+                "I've been selected as a beta tester for reality v2.0.",
+                "My consciousness has been temporarily containerized."
+            ]
+        };
+
+        let currentType = 'tech';
+        let currentExcuse = '';
+
+        // Handle excuse type selection
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentType = btn.dataset.type;
+            });
+        });
+
+        function generateExcuse() {
+            const excuseList = excuses[currentType];
+            const excuse = excuseList[Math.floor(Math.random() * excuseList.length)];
+            currentExcuse = excuse;
+
+            // Generate random metrics
+            const cooldown = Math.floor(Math.random() * 30) + 1;
+            const believability = Math.floor(Math.random() * 100) + 1;
+            const sympathy = Math.floor(Math.random() * 100) + 1;
+            const stars = Math.floor(Math.random() * 3) + 1; // 1-3 stars
+
+            // Update the DOM
+            document.getElementById('excuse').textContent = excuse;
+            document.getElementById('cooldown').textContent = `${cooldown} days`;
+            document.getElementById('believability').textContent = `${believability}%`;
+            document.getElementById('sympathy').textContent = `${sympathy}%`;
+            document.getElementById('rating').textContent = '⭐'.repeat(stars);
+
+            // Show the result and copy button
+            document.getElementById('result').classList.add('visible');
+            document.getElementById('copyBtn').classList.add('visible');
+
+            // Easter egg for low believability
+            if (believability < 20) {
+                document.getElementById('excuse').style.fontStyle = 'italic';
+            } else {
+                document.getElementById('excuse').style.fontStyle = 'normal';
+            }
+        }
+
+        function copyExcuse() {
+            navigator.clipboard.writeText(currentExcuse);
+            const copyBtn = document.getElementById('copyBtn');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied! (Use with caution*)';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        }
+
+        // Easter egg: Konami code generates a special excuse
+        let konamiCode = [];
+        const correctCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            if (konamiCode.length > correctCode.length) {
+                konamiCode.shift();
+            }
+            if (konamiCode.join(',') === correctCode.join(',')) {
+                document.getElementById('excuse').textContent = "I've discovered a critical vulnerability in the space-time continuum that requires my immediate attention. Also, my cat typed this.";
+                document.getElementById('result').classList.add('visible');
+                konamiCode = [];
+            }
+        });
+    </script>
+</body>
+</html>
