@@ -1,253 +1,221 @@
-import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Star,
-  PartyPopper,
-  BookOpen,
-  Mountain,
-  Utensils,
-  Compass,
-  Home,
-  Trees,
-  Building2,
-  Beer,
-  Coffee,
-  Wine,
-  GlassWater
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Cheese Are You?</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .fade {
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .fade.show {
+            opacity: 1;
+        }
+        .quiz-button {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            width: 100%;
+            text-align: left;
+            transition: all 0.3s;
+        }
+        .quiz-button:hover {
+            background-color: #fef3c7;
+            border-color: #fcd34d;
+        }
+        .progress-bar {
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-xl">
+        <!-- Header -->
+        <div class="bg-yellow-50 p-6 rounded-t-lg border-b border-yellow-100">
+            <h1 class="text-3xl font-bold text-center">🧀 What Cheese Are You? 🧀</h1>
+        </div>
 
-const CheeseQuiz = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState([]);
-  const [showResult, setShowResult] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+        <!-- Quiz Container -->
+        <div id="quizContainer" class="p-6">
+            <!-- Content will be inserted here by JavaScript -->
+        </div>
+    </div>
 
-  const questions = [
-    {
-      text: "How would you spend your ideal weekend?",
-      icon: PartyPopper,
-      options: [
-        { text: "Hosting an epic party with amazing food", personality: "extroverted", icon: PartyPopper },
-        { text: "Curled up with a good book and snacks", personality: "mild", icon: BookOpen },
-        { text: "Conquering mountain peaks", personality: "sharp", icon: Mountain },
-        { text: "Fine dining at a Michelin star restaurant", personality: "refined", icon: Utensils }
-      ]
-    },
-    {
-      text: "What's your life motto?",
-      icon: Compass,
-      options: [
-        { text: "Life is an adventure - take risks!", personality: "sharp", icon: Mountain },
-        { text: "Keep calm and carry on", personality: "mild", icon: Home },
-        { text: "Appreciate life's finest moments", personality: "refined", icon: Wine },
-        { text: "The more the merrier!", personality: "extroverted", icon: PartyPopper }
-      ]
-    },
-    {
-      text: "Choose your dream home:",
-      icon: Home,
-      options: [
-        { text: "Downtown penthouse with a party deck", personality: "extroverted", icon: Building2 },
-        { text: "Cozy cottage in the countryside", personality: "mild", icon: Home },
-        { text: "Mountain cabin with amazing views", personality: "sharp", icon: Trees },
-        { text: "Historic mansion with a wine cellar", personality: "refined", icon: Building2 }
-      ]
-    },
-    {
-      text: "Pick your signature drink:",
-      icon: Wine,
-      options: [
-        { text: "Craft IPA with complex flavors", personality: "sharp", icon: Beer },
-        { text: "Smooth, comforting latte", personality: "mild", icon: Coffee },
-        { text: "Aged vintage wine", personality: "refined", icon: Wine },
-        { text: "Creative cocktail flight", personality: "extroverted", icon: GlassWater }
-      ]
-    },
-    {
-      text: "What's your cooking style?",
-      icon: Utensils,
-      options: [
-        { text: "Experimental fusion cuisine", personality: "sharp", icon: Utensils },
-        { text: "Simple, comforting classics", personality: "mild", icon: Home },
-        { text: "Elegant French dishes", personality: "refined", icon: Utensils },
-        { text: "Big, sharing platters", personality: "extroverted", icon: PartyPopper }
-      ]
-    }
-  ];
+    <script>
+        // Quiz Data
+        const questions = [
+            {
+                text: "How would you spend your ideal weekend?",
+                options: [
+                    { text: "Hosting a lively party 🎉", personality: "extroverted" },
+                    { text: "Quiet reading at home 📚", personality: "mild" },
+                    { text: "Mountain hiking ⛰️", personality: "sharp" },
+                    { text: "Fine dining 🍽️", personality: "refined" }
+                ]
+            },
+            {
+                text: "What's your approach to life?",
+                options: [
+                    { text: "Bold and adventurous 🌟", personality: "sharp" },
+                    { text: "Calm and easy-going 🌸", personality: "mild" },
+                    { text: "Sophisticated and cultured 🎭", personality: "refined" },
+                    { text: "Fun and outgoing 🎈", personality: "extroverted" }
+                ]
+            },
+            {
+                text: "Choose your dream home:",
+                options: [
+                    { text: "Downtown penthouse 🏢", personality: "extroverted" },
+                    { text: "Cozy cottage 🏡", personality: "mild" },
+                    { text: "Mountain cabin 🌲", personality: "sharp" },
+                    { text: "Historic mansion 🏰", personality: "refined" }
+                ]
+            },
+            {
+                text: "Pick your favorite drink:",
+                options: [
+                    { text: "Craft beer 🍺", personality: "sharp" },
+                    { text: "Herbal tea 🫖", personality: "mild" },
+                    { text: "Fine wine 🍷", personality: "refined" },
+                    { text: "Fun cocktail 🍹", personality: "extroverted" }
+                ]
+            }
+        ];
 
-  const cheeseResults = {
-    extroverted: {
-      cheese: "Aged Cheddar",
-      icon: Star,
-      description: "You're a bold, aged Cheddar - the life of the party! Like this beloved cheese, you're sharp, distinctive, and always memorable. You bring people together and make every gathering more exciting.",
-      pairings: ["Perfect with: craft beer, apple slices, or crusty bread", "Best served: At room temperature, just like your warm personality", "Ideal setting: The center of attention at any gathering"],
-      traits: ["Outgoing", "Energetic", "Memorable", "Social"]
-    },
-    mild: {
-      cheese: "Fresh Mozzarella",
-      icon: Star,
-      description: "You're Fresh Mozzarella - gentle, pure, and universally adored! Like this versatile cheese, you're adaptable and bring a calm, comforting presence to any situation.",
-      pairings: ["Perfect with: fresh basil, tomatoes, and olive oil", "Best served: Fresh and natural, just as you are", "Ideal setting: Intimate gatherings with close friends"],
-      traits: ["Adaptable", "Calming", "Reliable", "Genuine"]
-    },
-    sharp: {
-      cheese: "Bold Blue Cheese",
-      icon: Star,
-      description: "You're Bold Blue Cheese - intense, unique, and unforgettable! Like this distinctive cheese, you have a powerful presence that challenges and delights. You're not afraid to stand out and make a statement.",
-      pairings: ["Perfect with: honey, walnuts, or bold wines", "Best served: With confidence, just like you", "Ideal setting: Adventure trips and unique experiences"],
-      traits: ["Bold", "Adventurous", "Distinctive", "Confident"]
-    },
-    refined: {
-      cheese: "Triple Cream Brie",
-      icon: Star,
-      description: "You're Triple Cream Brie - sophisticated, smooth, and luxurious! Like this elegant cheese, you appreciate life's finer things and have an eye for quality. You bring refinement to every situation.",
-      pairings: ["Perfect with: champagne, fresh figs, or truffle honey", "Best served: At its peak, like your impeccable timing", "Ideal setting: Upscale events and cultural gatherings"],
-      traits: ["Sophisticated", "Cultured", "Elegant", "Refined"]
-    }
-  };
+        const results = {
+            extroverted: {
+                cheese: "Cheddar",
+                description: "You're bold and outgoing like a sharp Cheddar! Social and versatile, you're the life of any party and everyone's favorite.",
+                traits: ["Outgoing", "Energetic", "Fun", "Social"]
+            },
+            mild: {
+                cheese: "Mozzarella",
+                description: "You're gentle and adaptable like fresh Mozzarella! Easy-going and universally liked, you bring harmony to any situation.",
+                traits: ["Gentle", "Adaptable", "Kind", "Reliable"]
+            },
+            sharp: {
+                cheese: "Blue Cheese",
+                description: "You're bold and distinctive like Blue Cheese! You have a strong personality and aren't afraid to stand out from the crowd.",
+                traits: ["Bold", "Unique", "Adventurous", "Strong-willed"]
+            },
+            refined: {
+                cheese: "Brie",
+                description: "You're sophisticated and smooth like Brie! Cultured and elegant, you appreciate the finer things in life.",
+                traits: ["Sophisticated", "Elegant", "Cultured", "Refined"]
+            }
+        };
 
-  const handleAnswer = (personality) => {
-    setIsAnimating(true);
-    const newAnswers = [...answers, personality];
-    setAnswers(newAnswers);
-    
-    setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-      } else {
-        setShowResult(true);
-      }
-      setIsAnimating(false);
-    }, 500);
-  };
+        // Quiz State
+        let currentQuestion = 0;
+        let answers = [];
 
-  const getResult = () => {
-    const personalityCounts = answers.reduce((acc, personality) => {
-      acc[personality] = (acc[personality] || 0) + 1;
-      return acc;
-    }, {});
+        // Quiz Functions
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
 
-    const dominantPersonality = Object.entries(personalityCounts)
-      .reduce((a, b) => (b[1] > a[1] ? b : a))[0];
+            const html = `
+                <div class="fade">
+                    <div class="mb-6">
+                        <div class="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Question ${currentQuestion + 1} of ${questions.length}</span>
+                            <span>${Math.round(progress)}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full progress-bar" style="width: ${progress}%"></div>
+                        </div>
+                    </div>
 
-    return cheeseResults[dominantPersonality];
-  };
+                    <h2 class="text-xl font-bold mb-6">${question.text}</h2>
 
-  const restart = () => {
-    setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentQuestion(0);
-      setAnswers([]);
-      setShowResult(false);
-      setIsAnimating(false);
-    }, 500);
-  };
+                    <div class="space-y-3">
+                        ${question.options.map((option, index) => `
+                            <button 
+                                onclick="selectAnswer('${option.personality}')" 
+                                class="quiz-button"
+                            >
+                                ${option.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
 
-  const progressPercentage = (currentQuestion / questions.length) * 100;
+            document.getElementById('quizContainer').innerHTML = html;
+            setTimeout(() => {
+                document.querySelector('.fade').classList.add('show');
+            }, 50);
+        }
 
-  return (
-    <Card className="w-full max-w-3xl mx-auto bg-white shadow-xl">
-      <CardHeader className="text-center bg-yellow-50 rounded-t-lg border-b border-yellow-100">
-        <CardTitle className="text-3xl font-bold flex items-center justify-center gap-3">
-          <Star className="w-8 h-8" />
-          What Cheese Are You?
-          <Star className="w-8 h-8" />
-        </CardTitle>
-      </CardHeader>
-      <CardContent className={`p-6 transition-opacity duration-500 ${isAnimating ? 'opacity-0' : 'opacity-100'}`}>
-        {!showResult ? (
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm text-gray-600">
-                <span>Question {currentQuestion + 1} of {questions.length}</span>
-                <span>{Math.round(progressPercentage)}% Complete</span>
-              </div>
-              <Progress value={progressPercentage} className="h-2" />
-            </div>
+        function showResult() {
+            const personalityCount = {};
+            answers.forEach(answer => {
+                personalityCount[answer] = (personalityCount[answer] || 0) + 1;
+            });
+
+            const personality = Object.entries(personalityCount)
+                .sort((a, b) => b[1] - a[1])[0][0];
+
+            const result = results[personality];
+
+            const html = `
+                <div class="fade text-center">
+                    <h2 class="text-3xl font-bold mb-4">You are ${result.cheese}! 🧀</h2>
+                    <p class="text-xl mb-8">${result.description}</p>
+                    
+                    <div class="bg-yellow-50 p-6 rounded-lg mb-8">
+                        <h3 class="font-bold mb-4">Your Key Traits:</h3>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            ${result.traits.map(trait => `
+                                <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
+                                    ${trait}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <button 
+                        onclick="restartQuiz()" 
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-lg transition-colors"
+                    >
+                        Take the Quiz Again
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('quizContainer').innerHTML = html;
+            setTimeout(() => {
+                document.querySelector('.fade').classList.add('show');
+            }, 50);
+        }
+
+        function selectAnswer(personality) {
+            answers.push(personality);
+            document.querySelector('.fade').classList.remove('show');
             
-            <div className="flex items-center gap-3 text-xl font-medium">
-              {React.createElement(questions[currentQuestion].icon, { className: "w-6 h-6" })}
-              {questions[currentQuestion].text}
-            </div>
+            setTimeout(() => {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    showResult();
+                }
+            }, 500);
+        }
 
-            <div className="grid grid-cols-1 gap-4">
-              {questions[currentQuestion].options.map((option, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  className="p-6 text-lg hover:bg-yellow-50 hover:border-yellow-200 transition-all flex items-center gap-3 group"
-                  onClick={() => handleAnswer(option.personality)}
-                >
-                  {React.createElement(option.icon, { 
-                    className: "w-5 h-5 group-hover:scale-110 transition-transform" 
-                  })}
-                  {option.text}
-                </Button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-8 py-4">
-            <div className="text-center space-y-4">
-              {React.createElement(getResult().icon, { 
-                className: "w-16 h-16 mx-auto text-yellow-500" 
-              })}
-              <div className="text-3xl font-bold text-yellow-800">
-                You are {getResult().cheese}!
-              </div>
-              <div className="text-xl text-gray-600">
-                {getResult().description}
-              </div>
-            </div>
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            document.querySelector('.fade').classList.remove('show');
+            setTimeout(showQuestion, 500);
+        }
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="bg-yellow-50 border-yellow-100">
-                <CardHeader>
-                  <CardTitle className="text-lg">Perfect Pairings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-gray-600">
-                    {getResult().pairings.map((pairing, index) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <div className="w-1 h-1 bg-yellow-400 rounded-full"></div>
-                        {pairing}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-yellow-50 border-yellow-100">
-                <CardHeader>
-                  <CardTitle className="text-lg">Key Traits</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {getResult().traits.map((trait, index) => (
-                      <span key={index} className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
-                        {trait}
-                      </span>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="text-center pt-4">
-              <Button 
-                onClick={restart}
-                className="px-8 py-6 text-lg bg-yellow-500 hover:bg-yellow-600"
-              >
-                Take the Quiz Again
-              </Button>
-            </div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-};
-
-export default CheeseQuiz;
+        // Start the quiz
+        document.addEventListener('DOMContentLoaded', showQuestion);
+    </script>
+</body>
+</html>
