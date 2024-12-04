@@ -53,7 +53,9 @@
             100% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3); }
         }
         button {
-            margin-bottom:30px;
+            display: block;
+            margin: 0 auto;
+            margin-bottom:10px;
         }
         .bg-gradient {
             background: linear-gradient(-45deg, #0F172A, #1E293B, #2E1065, #1E40AF);
@@ -455,6 +457,12 @@
                                 onClick: handleClick,
                                 className: "button px-14 py-7 rounded-2xl font-bold text-2xl text-white shadow-lg transform transition-all"
                             }, "Code Review Roaster")
+                        ),
+                        h('a', { href: 'raining-outside.html' },
+                            h('button', {
+                                onClick: handleClick,
+                                className: "button px-14 py-7 rounded-2xl font-bold text-2xl text-white shadow-lg transform transition-all"
+                            }, "Is It Raining Outside?")
                         ),
                     ])
                 ])
