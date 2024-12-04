@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎨 Color Palette Magic</title>
     <style>
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,22 +14,73 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            animation: sparkle 0.8s linear forwards;
+        }
+
+        /* Confetti animation */
+        @keyframes confetti {
+            0% { transform: translateY(0) rotateZ(0); opacity: 1; }
+            100% { transform: translateY(1000%) rotateZ(720deg); opacity: 0; }
+        }
+
         body {
             min-height: 100vh;
-            background: #f0f2f5;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 2rem;
         }
 
+        #confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
         .container {
             max-width: 1200px;
             width: 100%;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 2rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            animation: float 6s ease-in-out infinite;
         }
 
         .drop-zone {
@@ -84,8 +137,27 @@
         }
 
         .color-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-4px) rotateX(10deg) rotateY(10deg);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
+
+        .color-card {
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .color-card:nth-child(1) { animation-delay: 0.1s; }
+        .color-card:nth-child(2) { animation-delay: 0.2s; }
+        .color-card:nth-child(3) { animation-delay: 0.3s; }
+        .color-card:nth-child(4) { animation-delay: 0.4s; }
+        .color-card:nth-child(5) { animation-delay: 0.5s; }
+        .color-card:nth-child(6) { animation-delay: 0.6s; }
 
         .color-preview {
             height: 160px;
@@ -158,11 +230,13 @@
     </style>
 </head>
 <body>
+    <div id="confetti-container"></div>
     <div class="container">
-        <div class="drop-zone" id="dropZone">
-            <h2>🎨 Drop an image to extract colors</h2>
-            <p>or click to browse</p>
+        <div class="drop-zone animate__animated animate__pulse animate__infinite" id="dropZone">
+            <h2>✨ Drop an image to extract magical colors ✨</h2>
+            <p>or click anywhere to begin the color journey</p>
             <input type="file" id="fileInput" hidden accept="image/*">
+            <div class="magic-dots"></div>
         </div>
         <div class="preview" id="preview">
             <img id="previewImage">
@@ -369,10 +443,48 @@
             return `${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%`;
         }
 
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            sparkle.innerHTML = '✨';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 800);
+        }
+
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = '50%';
+                confetti.style.animation = `confetti ${1 + Math.random() * 2}s linear forwards`;
+                document.getElementById('confetti-container').appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
         async function copyToClipboard(text) {
             try {
                 await navigator.clipboard.writeText(text);
+                // Create sparkles around cursor
+                document.addEventListener('mousemove', (e) => {
+                    createSparkle(e.clientX, e.clientY);
+                }, { once: true });
+                
+                // Show toast and create confetti
                 showToast();
+                createConfetti();
+                
+                // Play a satisfying sound
+                const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBzhzx/Prom0fBhpRu/n7xogxBgxJt/rktn4lBSVq0/r0h0cQFnC9C/6+14wlBRkygN8A/JNoLwwLR6ju/99+PRYEA9O7/1wPBgIA4tdYFA');
+                audio.play();
             } catch (err) {
                 console.error('Failed to copy:', err);
             }
