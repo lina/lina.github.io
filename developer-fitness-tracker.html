@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Fitness Tracker 💪</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #059669 0%, #065f46 100%);
+            color: #ecfdf5;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a7f3d0;
+            margin-bottom: 2rem;
+        }
+
+        .workout-area {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #34d399;
+            border-radius: 0.5rem;
+            color: #ecfdf5;
+            padding: 1rem;
+            font-family: monospace;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #34d399;
+        }
+
+        .stat-label {
+            color: #a7f3d0;
+            font-size: 0.9rem;
+        }
+
+        .achievements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .achievement {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .achievement.unlocked {
+            opacity: 1;
+            background: rgba(52, 211, 153, 0.2);
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #34d399 0%, #059669 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .level-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #a7f3d0;
+            font-size: 0.9rem;
+        }
+
+        @keyframes unlock {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .achievement.just-unlocked {
+            animation: unlock 0.5s ease;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Developer Fitness Tracker 💪</h1>
+        <p class="subtitle">Where every keystroke counts as exercise*</p>
+
+        <div class="workout-area">
+            <textarea 
+                id="workoutArea" 
+                placeholder="Start typing to work out! The more you type, the more calories** you burn!"
+            ></textarea>
+        </div>
+
+        <div class="level-info">
+            <h3>Developer Level: <span id="level">1</span></h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="levelProgress"></div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="keystrokes">0</div>
+                <div class="stat-label">Keystrokes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="calories">0</div>
+                <div class="stat-label">Calories** Burned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="combo">0x</div>
+                <div class="stat-label">Combo Multiplier</div>
+            </div>
+        </div>
+
+        <div class="achievements">
+            <div class="achievement" id="achievement1">
+                <div class="achievement-icon">🌱</div>
+                <div>Hello World</div>
+                <small>Type your first character</small>
+            </div>
+            <div class="achievement" id="achievement2">
+                <div class="achievement-icon">⚡️</div>
+                <div>Speed Demon</div>
+                <small>Type 60 WPM</small>
+            </div>
+            <div class="achievement" id="achievement3">
+                <div class="achievement-icon">🔥</div>
+                <div>Combo Master</div>
+                <small>Reach 10x combo</small>
+            </div>
+            <div class="achievement" id="achievement4">
+                <div class="achievement-icon">🏃</div>
+                <div>Marathon Coder</div>
+                <small>1000 keystrokes</small>
+            </div>
+        </div>
+
+        <footer>
+            * No actual exercise involved
+            <br>
+            ** Calculated using highly questionable mathematics
+        </footer>
+    </div>
+
+    <script>
+        let keystrokes = 0;
+        let calories = 0;
+        let combo = 1;
+        let level = 1;
+        let lastKeystroke = Date.now();
+        let achievements = {
+            helloWorld: false,
+            speedDemon: false,
+            comboMaster: false,
+            marathonCoder: false
+        };
+
+        const textarea = document.getElementById('workoutArea');
+        let recentStrokes = [];
+
+        function calculateWPM() {
+            const now = Date.now();
+            recentStrokes = recentStrokes.filter(time => now - time < 60000);
+            recentStrokes.push(now);
+            return Math.round((recentStrokes.length * 60) / 5);
+        }
+
+        function updateStats() {
+            document.getElementById('keystrokes').textContent = keystrokes;
+            document.getElementById('calories').textContent = Math.round(calories);
+            document.getElementById('combo').textContent = combo + 'x';
+            document.getElementById('level').textContent = level;
+            
+            const levelProgress = ((keystrokes % 1000) / 1000) * 100;
+            document.getElementById('levelProgress').style.width = levelProgress + '%';
+        }
+
+        function unlockAchievement(id, achievementName) {
+            if (!achievements[achievementName]) {
+                achievements[achievementName] = true;
+                const achievement = document.getElementById(id);
+                achievement.classList.add('unlocked', 'just-unlocked');
+                setTimeout(() => achievement.classList.remove('just-unlocked'), 500);
+            }
+        }
+
+        textarea.addEventListener('input', (e) => {
+            const now = Date.now();
+            
+            // Update keystrokes and check combo
+            keystrokes++;
+            if (now - lastKeystroke < 1500) {
+                combo = Math.min(combo + 0.1, 10);
+            } else {
+                combo = 1;
+            }
+            lastKeystroke = now;
+
+            // Calculate calories (using very scientific** formula)
+            calories += 0.1 * combo;
+
+            // Check level up
+            level = Math.floor(keystrokes / 1000) + 1;
+
+            // Check achievements
+            if (keystrokes === 1) {
+                unlockAchievement('achievement1', 'helloWorld');
+            }
+            if (calculateWPM() >= 60) {
+                unlockAchievement('achievement2', 'speedDemon');
+            }
+            if (combo >= 10) {
+                unlockAchievement('achievement3', 'comboMaster');
+            }
+            if (keystrokes >= 1000) {
+                unlockAchievement('achievement4', 'marathonCoder');
+            }
+
+            updateStats();
+        });
+
+        // Easter egg: Konami code gives instant level up
+        let konamiCode = [];
+        const correctCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            if (konamiCode.length > correctCode.length) {
+                konamiCode.shift();
+            }
+            if (konamiCode.join(',') === correctCode.join(',')) {
+                keystrokes += 1000;
+                level++;
+                updateStats();
+                konamiCode = [];
+            }
+        });
+    </script>
+</body>
+</html>
