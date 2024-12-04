@@ -42,10 +42,50 @@
             animation: sparkle 0.8s linear forwards;
         }
 
-        /* Confetti animation */
-        @keyframes confetti {
-            0% { transform: translateY(0) rotateZ(0); opacity: 1; }
-            100% { transform: translateY(1000%) rotateZ(720deg); opacity: 0; }
+        /* Confetti pieces */
+        .confetti {
+            position: absolute;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* Different confetti shapes */
+        .confetti-rect {
+            width: 8px;
+            height: 12px;
+            background: currentColor;
+            border-radius: 1px;
+        }
+        
+        .confetti-circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        
+        .confetti-star {
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            width: 12px;
+            height: 12px;
+            background: currentColor;
+        }
+
+        @keyframes confetti-slow {
+            0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0); }
+            100% { transform: translate3d(25px, 105vh, 0) rotateX(360deg) rotateY(180deg) rotateZ(270deg); }
+        }
+
+        @keyframes confetti-medium {
+            0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0); }
+            100% { transform: translate3d(100px, 105vh, 0) rotateX(100deg) rotateY(360deg) rotateZ(180deg); }
+        }
+
+        @keyframes confetti-fast {
+            0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0); }
+            100% { transform: translate3d(-50px, 105vh, 0) rotateX(10deg) rotateY(250deg) rotateZ(360deg); }
         }
 
         body {
@@ -454,19 +494,54 @@
         }
 
         function createConfetti() {
-            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            const container = document.getElementById('confetti-container');
+            
+            // Beautiful, carefully selected colors
+            const colors = [
+                '#FFD700', // Gold
+                '#FF3366', // Rose
+                '#9437FF', // Purple
+                '#36FFE1', // Aqua
+                '#FF9A23', // Orange
+                '#49FF6C'  // Lime
+            ];
+            
+            // Different shapes
+            const shapes = ['confetti-rect', 'confetti-circle', 'confetti-star'];
+            
+            // Different animations
+            const animations = [
+                { name: 'confetti-slow', duration: 2.5 },
+                { name: 'confetti-medium', duration: 2 },
+                { name: 'confetti-fast', duration: 1.5 }
+            ];
+            
+            // Create multiple confetti pieces
             for (let i = 0; i < 50; i++) {
                 const confetti = document.createElement('div');
-                confetti.style.position = 'absolute';
+                confetti.className = `confetti ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+                
+                // Random position
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.top = '-20px';
-                confetti.style.width = '10px';
-                confetti.style.height = '10px';
-                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.borderRadius = '50%';
-                confetti.style.animation = `confetti ${1 + Math.random() * 2}s linear forwards`;
-                document.getElementById('confetti-container').appendChild(confetti);
-                setTimeout(() => confetti.remove(), 3000);
+                
+                // Random color
+                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random animation
+                const animation = animations[Math.floor(Math.random() * animations.length)];
+                confetti.style.animation = `${animation.name} ${animation.duration}s ease-in-out forwards`;
+                
+                // Random delay
+                confetti.style.animationDelay = Math.random() * 0.4 + 's';
+                
+                // Random initial rotation
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                container.appendChild(confetti);
+                
+                // Clean up
+                setTimeout(() => confetti.remove(), animation.duration * 1000);
             }
         }
 
