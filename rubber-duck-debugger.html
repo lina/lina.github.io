@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ultimate Rubber Duck Debugger</title>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.0/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fef9c3, #fef3c7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            perspective: 1000px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .debug-steps {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 2px solid #fbbf24;
+            display: none;
+        }
+
+        .debug-steps.visible {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        .debug-step {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transform: translateX(-20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .debug-step.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .debug-step:hover {
+            transform: scale(1.02) !important;
+        }
+
+        .duck-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .duck {
+            width: 200px;
+            height: 200px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            transform-origin: bottom center;
+        }
+
+        .duck:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        @keyframes superFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(5px, -15px) rotate(5deg); }
+            50% { transform: translate(0, -5px) rotate(0deg); }
+            75% { transform: translate(-5px, -15px) rotate(-5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .super-float {
+            animation: superFloat 3s ease-in-out infinite;
+        }
+
+        .message-bubble {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: all 0.3s ease;
+            min-width: 250px;
+            text-align: center;
+            border: 2px solid #fbbf24;
+            font-weight: 500;
+        }
+
+        .message-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+
+        .message-bubble.visible {
+            opacity: 1;
+            top: -60px;
+            animation: bubblePop 0.5s ease;
+        }
+
+        @keyframes bubblePop {
+            0% { transform: translateX(-50%) scale(0.8); }
+            50% { transform: translateX(-50%) scale(1.1); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #fbbf24;
+            border-radius: 12px;
+            height: 120px;
+            margin-bottom: 1rem;
+            resize: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(to right, #fff, #fffbeb);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .button {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, .5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(100, 100);
+                opacity: 0;
+            }
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .shine-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            background: linear-gradient(
+                135deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.4) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .container:hover .shine-effect {
+            opacity: 1;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            animation: sparkle 1s ease forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+        }
+
+        @keyframes celebrate {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(720deg); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            margin: 1rem 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar.visible {
+            display: block;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            transition: width 0.3s ease;
+        }
+
+        .rubber-duck-tip {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #92400e;
+            display: none;
+        }
+
+        .rubber-duck-tip.visible {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .celebration {
+            position: absolute;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .celebration.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="shine-effect"></div>
+        <div class="celebration"></div>
+        <div class="duck-container">
+            <div class="message-bubble">QUACK! Let's debug together! 🐞</div>
+            <svg class="duck" viewBox="0 0 240 240">
+                <!-- Base body shadow -->
+                <ellipse cx="120" cy="160" rx="70" ry="10" fill="rgba(0,0,0,0.1)"/>
+                
+                <!-- Main Body -->
+                <path d="M60 100 C60 150, 180 150, 180 100 C180 60, 60 60, 60 100"
+                    fill="#FFD700" stroke="#FFA500" stroke-width="2.5"/>
+                
+                <!-- Bottom body -->
+                <path d="M60 100 C60 170, 180 170, 180 100"
+                    fill="#FFD700" stroke="#FFA500" stroke-width="2.5"/>
+                
+                <!-- Head shape -->
+                <path d="M100 60 C100 30, 140 30, 140 60 C140 80, 100 80, 100 60"
+                    fill="#FFD700" stroke="#FFA500" stroke-width="2.5"/>
+                
+                <!-- Wing detail -->
+                <path d="M75 90 C65 80, 65 120, 75 110 C85 100, 85 90, 75 90"
+                    fill="#FFE135" stroke="#FFA500" stroke-width="2"/>
+                
+                <!-- Eyes -->
+                <circle cx="115" cy="55" r="5.5" fill="black"/>
+                <circle cx="135" cy="55" r="5.5" fill="black"/>
+                <circle cx="113" cy="53" r="2.5" fill="white"/>
+                <circle cx="133" cy="53" r="2.5" fill="white"/>
+                
+                <!-- Beak -->
+                <path d="M125 60 L150 58 L150 70 L125 68 Z"
+                    fill="#FF8C00" stroke="#FF6B00" stroke-width="2"/>
+                
+                <!-- Shine highlights -->
+                <ellipse cx="100" cy="80" rx="20" ry="15" fill="white" opacity="0.25"/>
+                <ellipse cx="140" cy="120" rx="25" ry="20" fill="white" opacity="0.2"/>
+                <circle cx="90" cy="110" r="10" fill="white" opacity="0.15"/>
+                
+                <!-- Tail -->
+                <path d="M65 120 C55 110, 50 130, 60 130 C70 130, 75 120, 65 120"
+                    fill="#FFD700" stroke="#FFA500" stroke-width="2"/>
+                
+                <!-- Body contour -->
+                <path d="M80 140 C120 150, 160 150, 170 140"
+                    fill="none" stroke="#FFA500" stroke-width="1.5" opacity="0.5"/>
+            </svg>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+
+        <div class="debug-steps"></div>
+        
+        <textarea placeholder="Tell the duck what's troubling your code..."></textarea>
+        <button class="button">Start Debugging 🐞</button>
+        <div class="status">
+            <div class="status-dot"></div>
+            Ready to help you debug!
+        </div>
+
+        <div class="rubber-duck-tip"></div>
+    </div>
+
+    <script>
+        const duck = document.querySelector('.duck');
+        const messageBubble = document.querySelector('.message-bubble');
+        const textarea = document.querySelector('textarea');
+        const button = document.querySelector('.button');
+        const status = document.querySelector('.status');
+        const statusDot = document.querySelector('.status-dot');
+        const progressBar = document.querySelector('.progress-bar');
+        const progress = document.querySelector('.progress');
+        const debugSteps = document.querySelector('.debug-steps');
+        const rubberDuckTip = document.querySelector('.rubber-duck-tip');
+        const container = document.querySelector('.container');
+        const celebration = document.querySelector('.celebration');
+
+        const debuggingSteps = [
+            "Let's explain the problem step by step...",
+            "What are we trying to achieve?",
+            "What have we tried so far?",
+            "Where exactly does it break?",
+            "Have we checked the error messages?",
+            "Could there be any typos?",
+            "Are all variables properly defined?",
+            "Let's break this into smaller parts..."
+        ];
+
+        const duckTips = [
+            "🤔 Have you walked through your logic out loud?",
+            "🔍 Sometimes the simplest explanation is the right one!",
+            "💭 Can you explain what each part of your code does?",
+            "⚡️ Let's take this one step at a time...",
+            "🎯 Focus on where the behavior first starts to go wrong",
+            "💡 What assumptions are we making about the code?"
+        ];
+
+        const messages = [
+            "QUACK! 🔍 I'm thinking...",
+            "QUACK! 💡 Tell me more!",
+            "QUACK! 🤔 Interesting...",
+            "QUACK! 🎯 We're getting somewhere!",
+            "QUACK! ⭐️ Keep going!",
+            "QUACK! 🚀 Almost there!"
+        ];
+
+        let isListening = false;
+        let messageInterval;
+        let currentStep = 0;
+        let sparkleCount = 0;
+
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            sparkle.style.background = `radial-gradient(circle, 
+                ${['#ffd700', '#ffa500', '#ff6b00'][Math.floor(Math.random() * 3)]}, transparent)`;
+            container.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+
+        function createConfetti() {
+            const colors = ['#ffd700', '#ffa500', '#ff6b00', '#22c55e', '#3b82f6'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `celebrate ${3 + Math.random() * 2}s linear`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function showMessage(override = null) {
+            const message = override || messages[Math.floor(Math.random() * messages.length)];
+            messageBubble.textContent = message;
+            messageBubble.classList.add('visible');
+            
+            gsap.to(duck, {
+                y: -10,
+                duration: 0.2,
+                yoyo: true,
+                repeat: 1,
+                ease: "power2.inOut"
+            });
+
+            setTimeout(() => {
+                messageBubble.classList.remove('visible');
+            }, 3000);
+        }
+
+        function addDebugStep() {
+            if (currentStep < debuggingSteps.length) {
+                const step = document.createElement('div');
+                step.className = 'debug-step';
+                step.textContent = debuggingSteps[currentStep];
+                debugSteps.appendChild(step);
+                
+                // Animate progress
+                progress.style.width = ((currentStep + 1) / debuggingSteps.length * 100) + '%';
+                
+                setTimeout(() => {
+                    step.classList.add('visible');
+                    showMessage("QUACK! 🎯 Good point! Let's dig deeper!");
+                    
+                    // Add sparkles around the new step
+                    const rect = step.getBoundingClientRect();
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            createSparkle(
+                                rect.left + Math.random() * rect.width,
+                                rect.top + Math.random() * rect.height
+                            );
+                        }, i * 100);
+                    }
+                }, 100);
+
+                currentStep++;
+                
+                if (currentStep === debuggingSteps.length) {
+                    setTimeout(() => {
+                        showMessage("QUACK! 🎉 We've made great progress! Feel any closer to a solution?");
+                        createConfetti();
+                        celebration.classList.add('active');
+                    }, 1000);
+                }
+            }
+        }
+
+        function showRandomTip() {
+            const tip = duckTips[Math.floor(Math.random() * duckTips.length)];
+            rubberDuckTip.textContent = tip;
+            rubberDuckTip.classList.add('visible');
+        }
+
+        function startListening() {
+            isListening = true;
+            duck.classList.add('super-float');
+            button.textContent = 'Take a Break ☕';
+            status.innerHTML = '<div class="status-dot"></div>Duck is listening intently...';
+            progressBar.classList.add('visible');
+            debugSteps.classList.add('visible');
+            
+            gsap.to(container, {
+                rotateY: -5,
+                rotateX: 5,
+                duration: 1,
+                ease: "power2.out"
+            });
+            
+            messageInterval = setInterval(() => {
+                if (Math.random() < 0.3) {
+                    showMessage();
+                    addDebugStep();
+                    if (Math.random() < 0.5) showRandomTip();
+                }
+            }, 4000);
+
+            // Add some bouncy interactivity
+            gsap.to(duck, {
+                rotation: 5,
+                duration: 2,
+                yoyo: true,
+                repeat: -1,
+                ease: "power1.inOut"
+            });
+        }
+
+        function stopListening() {
+            isListening = false;
+            duck.classList.remove('super-float');
+            button.textContent = 'Start Debugging 🐞';
+            status.innerHTML = '<div class="status-dot"></div>Ready to help you debug!';
+            progressBar.classList.remove('visible');
+            debugSteps.innerHTML = '';
+            rubberDuckTip.classList.remove('visible');
+            celebration.classList.remove('active');
+            currentStep = 0;
+            
+            gsap.to(container, {
+                rotateY: 0,
+                rotateX: 0,
+                duration: 0.5
+            });
+            
+            clearInterval(messageInterval);
+            gsap.to(duck, {
+                rotation: 0,
+                duration: 0.5
+            });
+        }
+
+        button.addEventListener('click', () => {
+            if (!isListening && textarea.value.trim()) {
+                startListening();
+            } else {
+                stopListening();
+                textarea.value = '';
+            }
+        });
+
+        // Add some fun interactions
+        duck.addEventListener('mouseover', () => {
+            if (!isListening) {
+                showMessage("QUACK! 🦆 Need help debugging?");
+            }
+            gsap.to(duck, {
+                scale: 1.1,
+                duration: 0.3,
+                ease: "back.out"
+            });
+        });
+
+        duck.addEventListener('mouseout', () => {
+            gsap.to(duck, {
+                scale: 1,
+                duration: 0.3,
+                ease: "back.out"
+            });
+        });
+
+        // Track mouse for dynamic lighting
+        document.addEventListener('mousemove', (e) => {
+            if (!isListening) {
+                const rect = container.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+                
+                gsap.to(container, {
+                    rotateY: (x - 0.5) * 10,
+                    rotateX: (y - 0.5) * -10,
+                    duration: 0.5
+                });
+            }
+        });
+
+        // Add sparkles on click
+        duck.addEventListener('click', (e) => {
+            const rect = duck.getBoundingClientRect();
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    createSparkle(
+                        e.clientX - rect.left + (Math.random() - 0.5) * 50,
+                        e.clientY - rect.top + (Math.random() - 0.5) * 50
+                    );
+                }, i * 50);
+            }
+        });
+
+        // Initial animation
+        gsap.from(container, {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out"
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+import React, { useState } from 'react';
+import { Loader2, Globe, Wifi, WifiOff, Check, X, ExternalLink } from 'lucide-react';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+
+const locations = [
+  { name: "New York", emoji: "🗽" },
+  { name: "London", emoji: "🇬🇧" },
+  { name: "Tokyo", emoji: "🗼" },
+  { name: "Sydney", emoji: "🦘" },
+  { name: "São Paulo", emoji: "🇧🇷" }
+];
+
+const funnyMessages = {
+  checking: [
+    "Poking the server with a stick... 🏏",
+    "Sending carrier pigeons... 🐦",
+    "Consulting the internet gods... 🙏",
+    "Running hamster wheels faster... 🐹",
+    "Untangling internet cables... 🔌",
+  ],
+  down: [
+    "Yep, it's totally dead. RIP in peace 💀",
+    "Houston, we have a problem 🚀",
+    "Even tried turning it off and on again 🔌",
+    "Time to panic! (or grab coffee) ☕",
+    "404: Server not having a good time 😵",
+  ],
+  up: [
+    "Smooth sailing! Site's living its best life 🏖️",
+    "Green means go! 🚦",
+    "Working harder than my ex's excuse game 💅",
+    "Fresh as a daisy! 🌼",
+    "Running like a caffeinated cheetah! 🐆",
+  ],
+  internet: [
+    "Plot twist: It's your internet 😱",
+    "Time to yell at your router 📢",
+    "Have you tried unplugging your life and plugging it back in? 🔌",
+    "Your internet is having a moment 😮‍💨",
+    "Connection.exe has stopped working 💾",
+  ]
+};
+
+const IsItDown = () => {
+  const [url, setUrl] = useState('');
+  const [isChecking, setIsChecking] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [message, setMessage] = useState('');
+  const [locationStatus, setLocationStatus] = useState({});
+
+  const getRandomMessage = (type) => {
+    const messages = funnyMessages[type];
+    return messages[Math.floor(Math.random() * messages.length)];
+  };
+
+  const simulateCheck = async () => {
+    if (!url) return;
+    
+    let cleanUrl = url;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      cleanUrl = 'https://' + url;
+    }
+
+    setIsChecking(true);
+    setStatus(null);
+    setLocationStatus({});
+    setMessage(getRandomMessage('checking'));
+
+    // Simulate checking from different locations
+    for (const location of locations) {
+      await new Promise(resolve => setTimeout(resolve, 800));
+      setLocationStatus(prev => ({
+        ...prev,
+        [location.name]: Math.random() > 0.2
+      }));
+    }
+
+    // Simulate final result
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    const isDown = Math.random() > 0.7;
+    const isInternet = Math.random() > 0.8;
+    
+    setStatus(isInternet ? 'internet' : (isDown ? 'down' : 'up'));
+    setMessage(getRandomMessage(isInternet ? 'internet' : (isDown ? 'down' : 'up')));
+    setIsChecking(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white p-8">
+      <div className="max-w-2xl mx-auto space-y-8">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
+            Is It Down? (But Better™)
+          </h1>
+          <p className="text-gray-400">Because checking if a website is down should be fun!</p>
+        </div>
+
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Enter a website URL..."
+            className="flex-1 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
+          />
+          <button
+            onClick={simulateCheck}
+            disabled={isChecking || !url}
+            className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 rounded-lg font-medium transition-all flex items-center gap-2"
+          >
+            {isChecking ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                Checking...
+              </>
+            ) : (
+              <>
+                <Globe size={20} />
+                Check It!
+              </>
+            )}
+          </button>
+        </div>
+
+        {isChecking && (
+          <div className="animate-fade-in space-y-6">
+            <p className="text-center text-xl font-medium text-purple-400">{message}</p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {locations.map(location => (
+                <div
+                  key={location.name}
+                  className={`p-4 rounded-lg border ${
+                    locationStatus[location.name] === undefined
+                      ? 'bg-gray-800 border-gray-700'
+                      : locationStatus[location.name]
+                      ? 'bg-green-900/20 border-green-700'
+                      : 'bg-red-900/20 border-red-700'
+                  } transition-all duration-300`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>
+                      {location.emoji} {location.name}
+                    </span>
+                    {locationStatus[location.name] !== undefined && (
+                      <span className="flex items-center">
+                        {locationStatus[location.name] ? (
+                          <Check size={18} className="text-green-400" />
+                        ) : (
+                          <X size={18} className="text-red-400" />
+                        )}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {status && (
+          <Alert className={`animate-bounce-in ${
+            status === 'up'
+              ? 'bg-green-900/20 border-green-700'
+              : status === 'internet'
+              ? 'bg-yellow-900/20 border-yellow-700'
+              : 'bg-red-900/20 border-red-700'
+          }`}>
+            <AlertTitle className="flex items-center gap-2">
+              {status === 'up' ? (
+                <Wifi className="text-green-400" />
+              ) : status === 'internet' ? (
+                <WifiOff className="text-yellow-400" />
+              ) : (
+                <X className="text-red-400" />
+              )}
+              {status === 'up'
+                ? "It's Alive!"
+                : status === 'internet'
+                ? "Plot Twist!"
+                : "It's Down!"}
+            </AlertTitle>
+            <AlertDescription className="mt-2 text-lg">
+              {message}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <footer className="text-center text-gray-500 text-sm">
+          Made with 💜 by someone who's tired of boring status checkers
+        </footer>
+      </div>
+    </div>
+  );
+};
+
+export default IsItDown;
