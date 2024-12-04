@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Startup Survival Calculator 3000</title>
+    <style>
+        :root {
+            --gradient-start: #4a1d96;
+            --gradient-end: #312e81;
+            --accent-color: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            background: linear-gradient(to right, #fbbf24, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        .subtitle {
+            color: #e9d5ff;
+            font-size: 1.1rem;
+        }
+
+        .input-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .input-group:hover {
+            transform: scale(1.02);
+        }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #e9d5ff;
+            font-weight: 600;
+        }
+
+        .emoji-icon {
+            font-size: 1.5rem;
+        }
+
+        .range-value {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .results {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .progress-bar {
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 1s ease, background-color 1s ease;
+        }
+
+        .survival-rate {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #fbbf24, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 1rem 0;
+        }
+
+        .survival-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e9d5ff;
+            margin: 1rem 0;
+        }
+
+        .status-icons {
+            font-size: 3rem;
+            margin: 1rem 0;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .tip {
+            font-style: italic;
+            color: #e9d5ff;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <h1 class="title">🚀 Startup Survival Calculator 3000</h1>
+            <p class="subtitle">Calculating your chances of shipping 10M apps! 🚀</p>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">
+                <span class="emoji-icon">☕</span>
+                STARTUP FUEL (Caffeine Cups)
+            </label>
+            <input type="range" id="caffeine" min="0" max="15" value="0">
+            <div class="range-value" id="caffeineValue">0</div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">
+                <span class="emoji-icon">🌙</span>
+                DOWNTIME (Sleep Hours)
+            </label>
+            <input type="range" id="sleep" min="0" max="24" value="8">
+            <div class="range-value" id="sleepValue">8</div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">
+                <span class="emoji-icon">📅</span>
+                MEETING MADNESS (Count)
+            </label>
+            <input type="range" id="meetings" min="0" max="15" value="0">
+            <div class="range-value" id="meetingsValue">0</div>
+        </div>
+
+        <div class="results">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="survival-rate" id="survivalRate">100% POWER LEVEL</div>
+            <div class="survival-message" id="survivalMessage">🦄 UNICORN STATUS ACHIEVED!</div>
+            <div class="status-icons" id="statusIcons">🚀</div>
+            <div class="tip" id="tip">✨ Pro tip: More caffeine = More shipping (usually)</div>
+        </div>
+    </div>
+
+    <script>
+        const elements = {
+            caffeine: document.getElementById('caffeine'),
+            sleep: document.getElementById('sleep'),
+            meetings: document.getElementById('meetings'),
+            caffeineValue: document.getElementById('caffeineValue'),
+            sleepValue: document.getElementById('sleepValue'),
+            meetingsValue: document.getElementById('meetingsValue'),
+            progressBar: document.getElementById('progressBar'),
+            survivalRate: document.getElementById('survivalRate'),
+            survivalMessage: document.getElementById('survivalMessage'),
+            statusIcons: document.getElementById('statusIcons'),
+            tip: document.getElementById('tip')
+        };
+
+        function calculateSurvival() {
+            let survival = 100;
+            
+            // Sleep calculations
+            const sleep = parseInt(elements.sleep.value);
+            if (sleep < 2) {
+                survival -= 60; // CRITICAL BURNOUT ALERT!
+            } else if (sleep < 4) {
+                survival -= 40; // DANGEROUS TERRITORY!
+            } else if (sleep < 6) {
+                survival -= 20; // PUSHING THE LIMITS!
+            }
+            
+            // Caffeine calculations
+            const caffeine = parseInt(elements.caffeine.value);
+            if (caffeine === 0) {
+                survival -= 30; // NO FUEL = NO STARTUP!
+            } else if (caffeine > 10) {
+                survival -= 40; // SYSTEM OVERLOAD!
+            } else if (caffeine > 5) {
+                survival += 20; // OPTIMAL STARTUP FUEL!
+            }
+            
+            // Meetings calculations
+            const meetings = parseInt(elements.meetings.value);
+            if (meetings > 10) {
+                survival -= 70; // MEETING APOCALYPSE!
+            } else if (meetings > 7) {
+                survival -= 50; // MEETING OVERLOAD!
+            } else if (meetings > 4) {
+                survival -= 30; // TOO MUCH TALKING, NOT ENOUGH SHIPPING!
+            }
+            
+            return Math.min(Math.max(survival, 0), 100);
+        }
+
+        function getProgressBarColor(rate) {
+            if (rate < 20) return '#ef4444';  // red
+            if (rate < 40) return '#f97316';  // orange
+            if (rate < 60) return '#eab308';  // yellow
+            if (rate < 80) return '#3b82f6';  // blue
+            return '#22c55e';  // green
+        }
+
+        function getSurvivalMessage(rate) {
+            if (rate < 20) {
+                return "🔥 BURNOUT IMMINENT! Time to pivot... to sleep!";
+            } else if (rate < 40) {
+                return "⚠️ VC ALERT: Your runtime is approaching EOL!";
+            } else if (rate < 60) {
+                return "💫 Series A Survival Mode Activated!";
+            } else if (rate < 80) {
+                return "🚀 SHIPPING VELOCITY: MAXIMUM!";
+            } else {
+                return "🦄 UNICORN STATUS ACHIEVED!";
+            }
+        }
+
+        function updateUI() {
+            const survivalRate = calculateSurvival();
+            
+            // Update values
+            elements.caffeineValue.textContent = elements.caffeine.value;
+            elements.sleepValue.textContent = elements.sleep.value;
+            elements.meetingsValue.textContent = elements.meetings.value;
+            
+            // Update progress bar
+            elements.progressBar.style.width = `${survivalRate}%`;
+            elements.progressBar.style.backgroundColor = getProgressBarColor(survivalRate);
+            
+            // Update survival rate
+            elements.survivalRate.textContent = `${survivalRate}% POWER LEVEL`;
+            
+            // Update message
+            elements.survivalMessage.textContent = getSurvivalMessage(survivalRate);
+            
+            // Update icons
+            elements.statusIcons.textContent = survivalRate < 50 ? '🔥💀' : '🚀✨';
+            
+            // Update tip
+            elements.tip.textContent = survivalRate < 30 
+                ? "❗ WARNING: Your startup velocity is reaching critical levels!"
+                : "✨ Pro tip: More caffeine = More shipping (usually)";
+        }
+
+        // Add event listeners
+        elements.caffeine.addEventListener('input', updateUI);
+        elements.sleep.addEventListener('input', updateUI);
+        elements.meetings.addEventListener('input', updateUI);
+
+        // Initial update
+        updateUI();
+    </script>
+</body>
+</html>
