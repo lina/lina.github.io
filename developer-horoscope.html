@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Horoscope 🔮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+            color: #E2E8F0;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #A78BFA;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #A78BFA;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #A78BFA;
+            border-radius: 0.5rem;
+            color: #E2E8F0;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #C4B5FD;
+            box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #A78BFA 0%, #7C3AED 100%);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            display: none;
+        }
+
+        .result.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .fortune {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #A78BFA;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lucky-item {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #A78BFA;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 Developer Horoscope</h1>
+        
+        <div class="input-group">
+            <label>Number of commits this week</label>
+            <input type="number" id="commits" min="0" placeholder="How many times did you git push?">
+        </div>
+
+        <div class="input-group">
+            <label>Favorite programming language</label>
+            <input type="text" id="language" placeholder="What's your code comfort food?">
+        </div>
+
+        <button onclick="generateHoroscope()">Read My Fortune 🌟</button>
+
+        <div class="result" id="result">
+            <div class="fortune" id="fortune"></div>
+            <div class="lucky-item" id="luckyItem"></div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">Bug Probability</div>
+                    <div class="stat-value" id="bugProb">0%</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Productivity Level</div>
+                    <div class="stat-value" id="productivity">0%</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Coffee Needed</div>
+                    <div class="stat-value" id="coffee">0</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Powered by AI* 
+            <br>
+            <small>*Absolutely Incorrect predictions</small>
+        </footer>
+    </div>
+
+    <script>
+        const fortunes = [
+            "The brackets you seek are already closed.",
+            "A mysterious bug in production will reveal itself... after you push on Friday.",
+            "Your code shall spark joy through proper indentation.",
+            "The git blame points to a wiser version of yourself.",
+            "A well-timed console.log() will save your sanity.",
+            "Your pull requests will be blessed with quick reviews.",
+            "The stack overflow answers you seek are within reach.",
+            "Your merge conflicts shall resolve themselves... eventually.",
+            "A legacy codebase holds the key to your enlightenment.",
+            "Your tests will pass on the first try... in an alternate universe."
+        ];
+
+        const luckyItems = [
+            "Lucky Rubber Duck 🦆",
+            "Blessed Mechanical Keyboard ⌨️",
+            "Fortune-Bringing Coffee Mug ☕",
+            "Sacred Terminal Theme 🖥️",
+            "Mystical USB Cable 🔌",
+            "Enchanted Git Stash 📦",
+            "Magical Debugger 🔍",
+            "Cosmic Code Formatter 🌟",
+            "Divine Dark Mode Theme 🌙",
+            "Blessed Backup Drive 💾"
+        ];
+
+        function generateHoroscope() {
+            const commits = parseInt(document.getElementById('commits').value) || 0;
+            const language = document.getElementById('language').value || 'JavaScript';
+            
+            // Calculate "stats" based on inputs
+            const bugProb = ((commits * 7) % 100) + 1;
+            const productivity = ((commits * 13 + language.length * 7) % 100) + 1;
+            const coffeeNeeded = Math.min(10, Math.max(1, Math.ceil(commits / 5)));
+
+            // Get random fortune and lucky item
+            const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            const luckyItem = luckyItems[Math.floor(Math.random() * luckyItems.length)];
+
+            // Update the DOM
+            document.getElementById('fortune').textContent = fortune;
+            document.getElementById('luckyItem').textContent = `Lucky Item of the Day: ${luckyItem}`;
+            document.getElementById('bugProb').textContent = `${bugProb}%`;
+            document.getElementById('productivity').textContent = `${productivity}%`;
+            document.getElementById('coffee').textContent = `${coffeeNeeded}☕`;
+
+            // Show result with animation
+            document.getElementById('result').classList.add('visible');
+
+            // Easter egg for high commit counts
+            if (commits > 50) {
+                document.body.style.animation = 'rainbow 5s linear infinite';
+            }
+        }
+
+        // Add keypress event listener for enter key
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateHoroscope();
+            }
+        });
+    </script>
+</body>
+</html>
