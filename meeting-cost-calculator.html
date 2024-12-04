@@ -140,6 +140,25 @@
         .cost-display.pulsing {
             animation: pulse 0.5s ease;
         }
+
+        @keyframes money-rain {
+            0% { opacity: 0; transform: translateY(-20px); }
+            50% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(20px); }
+        }
+
+        .money-particle {
+            position: fixed;
+            pointer-events: none;
+            animation: money-rain 1s linear forwards;
+            font-size: 1.5rem;
+        }
+
+        .dramatic-warning {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: pulse 1s ease infinite;
+        }
     </style>
 </head>
 <body>
@@ -172,7 +191,25 @@
     </div>
 
     <script>
-        const salaryRanges = {
+        // Snarky comments for different cost thresholds
+const costComments = [
+    [100, "This meeting could have been an email 📧"],
+    [500, "Have you considered interpretive dance instead of meetings? 💃"],
+    [1000, "Your budget is crying in the corner 😭"],
+    [2000, "Someone's quarterly budget just died a little inside 💸"],
+    [5000, "Congratulations! You could have hired a temp instead!"],
+    [10000, "This meeting just paid someone's monthly salary 🎉"]
+];
+
+// Extra snarky comments for specific role combinations
+const roleComments = {
+    'too_many_managers': "Warning: Manager concentration approaching critical mass ⚠️",
+    'no_devs': "Bold strategy: A meeting with no developers to implement anything 🤔",
+    'only_interns': "Intern army assembled! Chaos incoming! 🌪️",
+    'expensive_crew': "Premium meeting: Now with golden keyboards! ✨"
+};
+
+const salaryRanges = {
             'intern': 15,
             'junior': 30,
             'mid': 50,
@@ -249,13 +286,47 @@
             }, 0);
         }
 
-        function updateDisplay() {
+        function checkRoleCombinations() {
+    const roles = attendees.map(a => a.role);
+    const messages = [];
+
+    // Too many managers
+    const managerCount = roles.filter(r => ['manager', 'director', 'ceo'].includes(r)).length;
+    if (managerCount >= 3) {
+        messages.push(roleComments.too_many_managers);
+    }
+
+    // No developers
+    if (!roles.some(r => ['intern', 'junior', 'mid', 'senior'].includes(r))) {
+        messages.push(roleComments.no_devs);
+    }
+
+    // Only interns
+    if (roles.length > 2 && roles.every(r => r === 'intern')) {
+        messages.push(roleComments.only_interns);
+    }
+
+    // Expensive crew
+    const expensiveRoles = roles.filter(r => ['director', 'ceo'].includes(r));
+    if (expensiveRoles.length >= 2) {
+        messages.push(roleComments.expensive_crew);
+    }
+
+    return messages;
+}
+
+function updateDisplay() {
             const costDisplay = document.getElementById('costDisplay');
             const oldCost = totalCost;
             totalCost = calculateCost() * ((Date.now() - startTime) / 1000);
             
             if (Math.floor(oldCost) !== Math.floor(totalCost)) {
                 costDisplay.classList.add('pulsing');
+            
+            // Create money rain effect when cost increases significantly
+            if (totalCost > 100 && Math.floor(oldCost/100) !== Math.floor(totalCost/100)) {
+                createMoneyRain();
+            }
                 setTimeout(() => costDisplay.classList.remove('pulsing'), 500);
             }
 
@@ -266,6 +337,20 @@
                 `(${coffeeCount} cups of coffee ☕)`;
 
             updateAlternativeCosts(totalCost);
+
+            // Add cost comments based on total
+            const costComment = costComments.reduce((acc, [threshold, message]) => 
+                totalCost > threshold ? message : acc, null);
+            
+            // Get role combination warnings
+            const roleWarnings = checkRoleCombinations();
+            
+            // Update the warnings display
+            const warnings = [...(costComment ? [costComment] : []), ...roleWarnings];
+            if (warnings.length > 0) {
+                document.getElementById('alternativeCosts').innerHTML = 
+                    warnings.join('<br>');
+            }
         }
 
         function updateAlternativeCosts(cost) {
@@ -305,6 +390,29 @@
             document.getElementById('costDisplay').textContent = '$0.00';
             document.getElementById('coffeeCount').textContent = '(0 cups of coffee ☕)';
         }
+
+        function createMoneyRain() {
+            const emojis = ['💸', '💰', '🔥', '💵'];
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'money-particle';
+                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                particle.style.left = Math.random() * 100 + 'vw';
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        // Easter egg: Type "budget" to make it rain money
+        let budgetCode = [];
+        document.addEventListener('keypress', (e) => {
+            budgetCode.push(e.key);
+            if (budgetCode.length > 6) budgetCode.shift();
+            if (budgetCode.join('') === 'budget') {
+                createMoneyRain();
+                budgetCode = [];
+            }
+        });
 
         // Add first attendee automatically
         addAttendee();
