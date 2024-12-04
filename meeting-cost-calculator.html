@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Cost Calculator 💸</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .attendees {
+            margin-bottom: 2rem;
+        }
+
+        .attendee-row {
+            display: grid;
+            grid-template-columns: auto 120px 40px;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        select, input {
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: white;
+            width: 100%;
+        }
+
+        option {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .remove-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .remove-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2rem;
+        }
+
+        .add-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .cost-display {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .coffee-equivalent {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .footnote {
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        #alternativeCosts {
+            text-align: center;
+            margin-top: 1rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .cost-display.pulsing {
+            animation: pulse 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Meeting Cost Calculator 💸</h1>
+        <p class="subtitle">Watch your budget burn in real-time!</p>
+
+        <div class="attendees" id="attendeesList">
+            <!-- Attendee rows will be added here -->
+        </div>
+
+        <button class="add-btn" onclick="addAttendee()">
+            Add Another Victim... err, Attendee
+        </button>
+
+        <div class="cost-display" id="costDisplay">$0.00</div>
+        <div class="coffee-equivalent" id="coffeeCount">
+            (0 cups of coffee ☕)
+        </div>
+
+        <div id="alternativeCosts">
+            This meeting could have bought you a rubber duck army
+        </div>
+
+        <p class="footnote">
+            * Calculated with questionable mathematics
+            <br>
+            ** Results may cause emotional damage
+        </p>
+    </div>
+
+    <script>
+        const salaryRanges = {
+            'intern': 15,
+            'junior': 30,
+            'mid': 50,
+            'senior': 75,
+            'lead': 100,
+            'manager': 125,
+            'director': 200,
+            'ceo': 500
+        };
+
+        let attendees = [];
+        let timer;
+        let totalCost = 0;
+        let startTime;
+
+        function addAttendee() {
+            const id = Date.now();
+            attendees.push({
+                id: id,
+                role: 'mid',
+                count: 1
+            });
+            renderAttendees();
+            startTimer();
+        }
+
+        function removeAttendee(id) {
+            attendees = attendees.filter(a => a.id !== id);
+            renderAttendees();
+            if (attendees.length === 0) {
+                stopTimer();
+            }
+        }
+
+        function renderAttendees() {
+            const container = document.getElementById('attendeesList');
+            container.innerHTML = attendees.map(attendee => `
+                <div class="attendee-row">
+                    <select onchange="updateRole(${attendee.id}, this.value)">
+                        <option value="intern" ${attendee.role === 'intern' ? 'selected' : ''}>Intern</option>
+                        <option value="junior" ${attendee.role === 'junior' ? 'selected' : ''}>Junior Dev</option>
+                        <option value="mid" ${attendee.role === 'mid' ? 'selected' : ''}>Mid Dev</option>
+                        <option value="senior" ${attendee.role === 'senior' ? 'selected' : ''}>Senior Dev</option>
+                        <option value="lead" ${attendee.role === 'lead' ? 'selected' : ''}>Team Lead</option>
+                        <option value="manager" ${attendee.role === 'manager' ? 'selected' : ''}>Manager</option>
+                        <option value="director" ${attendee.role === 'director' ? 'selected' : ''}>Director</option>
+                        <option value="ceo" ${attendee.role === 'ceo' ? 'selected' : ''}>CEO</option>
+                    </select>
+                    <input type="number" min="1" value="${attendee.count}" 
+                           onchange="updateCount(${attendee.id}, this.value)">
+                    <button class="remove-btn" onclick="removeAttendee(${attendee.id})">❌</button>
+                </div>
+            `).join('');
+        }
+
+        function updateRole(id, role) {
+            const attendee = attendees.find(a => a.id === id);
+            if (attendee) {
+                attendee.role = role;
+            }
+        }
+
+        function updateCount(id, count) {
+            const attendee = attendees.find(a => a.id === id);
+            if (attendee) {
+                attendee.count = parseInt(count) || 1;
+            }
+        }
+
+        function calculateCost() {
+            return attendees.reduce((total, attendee) => {
+                const rate = salaryRanges[attendee.role] / 3600; // per second
+                return total + (rate * attendee.count);
+            }, 0);
+        }
+
+        function updateDisplay() {
+            const costDisplay = document.getElementById('costDisplay');
+            const oldCost = totalCost;
+            totalCost = calculateCost() * ((Date.now() - startTime) / 1000);
+            
+            if (Math.floor(oldCost) !== Math.floor(totalCost)) {
+                costDisplay.classList.add('pulsing');
+                setTimeout(() => costDisplay.classList.remove('pulsing'), 500);
+            }
+
+            costDisplay.textContent = `$${totalCost.toFixed(2)}`;
+            
+            const coffeeCount = Math.floor(totalCost / 5); // Assuming $5 per coffee
+            document.getElementById('coffeeCount').textContent = 
+                `(${coffeeCount} cups of coffee ☕)`;
+
+            updateAlternativeCosts(totalCost);
+        }
+
+        function updateAlternativeCosts(cost) {
+            const alternatives = [
+                [10, "a rubber duck army"],
+                [50, "a mechanical keyboard"],
+                [100, "a premium IDE license"],
+                [500, "a new gaming chair"],
+                [1000, "a developer happiness budget"],
+                [5000, "an entire startup's MVP"]
+            ];
+
+            const nextMilestone = alternatives.find(([price]) => price > cost);
+            if (nextMilestone) {
+                const remaining = nextMilestone[0] - cost;
+                document.getElementById('alternativeCosts').textContent = 
+                    `$${remaining.toFixed(2)} more until you could have bought ${nextMilestone[1]}`;
+            } else {
+                document.getElementById('alternativeCosts').textContent = 
+                    "This meeting could have funded a small startup! 😱";
+            }
+        }
+
+        function startTimer() {
+            if (!timer) {
+                startTime = Date.now();
+                timer = setInterval(updateDisplay, 100);
+            }
+        }
+
+        function stopTimer() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            totalCost = 0;
+            document.getElementById('costDisplay').textContent = '$0.00';
+            document.getElementById('coffeeCount').textContent = '(0 cups of coffee ☕)';
+        }
+
+        // Add first attendee automatically
+        addAttendee();
+    </script>
+</body>
+</html>
