@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Review Roaster ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom right, #fdf2f8, #f3e8ff);
+            padding: 1.5rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .container {
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #6b21a8;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #4b5563;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 16rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            background: #f9fafb;
+            resize: vertical;
+        }
+
+        .roast-button {
+            margin-top: 1rem;
+            width: 100%;
+            background: linear-gradient(to right, #8b5cf6, #ec4899);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .roast-button:hover {
+            opacity: 0.9;
+        }
+
+        .roast-output {
+            height: 16rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background: #f9fafb;
+            overflow-y: auto;
+            white-space: pre-line;
+            color: #1f2937;
+        }
+
+        .empty-state {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 2rem;
+        }
+
+        .copy-button {
+            background: none;
+            border: none;
+            color: #8b5cf6;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .copy-button:hover {
+            color: #6d28d9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Code Review Roaster ✨</h1>
+            <p class="subtitle">Serving sass and constructive criticism since 2024</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2 class="card-title">Paste Your Code Here 💻</h2>
+                <textarea id="codeInput" placeholder="Paste your code here for a reality check..."></textarea>
+                <button class="roast-button" onclick="roastCode()">🗨️ Roast This Code!</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span>The Tea ☕️</span>
+                    <button id="copyButton" class="copy-button" onclick="copyRoast()" style="display: none;">📋</button>
+                </div>
+                <div id="roastOutput" class="roast-output">
+                    <p class="empty-state">Waiting to spill the tea on your code... 🫖</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer">Remember: This roast is served with a side of love! 💖</p>
+    </div>
+
+    <script>
+        const snarkyComments = [
+    // Original classics
+    "Sweetie, your variable names are giving me 'a', 'b', 'c' energy. We're not playing alphabet soup here! 💅",
+    "This code is like my ex - complex, messy, and in desperate need of therapy. Have you heard of refactoring? 🚩",
+    "Oh honey, those nested if statements? It's giving me maze runner vibes. Even Theseus would get lost in here! 🌟",
+    "This function is longer than my coffee break, and I take LONG coffee breaks ☕",
+    "Your comments are like my dating life - non-existent. We need to work on communication! 📝",
+    "This code is serving early bootcamp realness. Let's elevate it to senior eleganza! 👑",
+    "These magic numbers are giving me trust issues. Constants are your friends, bestie! 🔮",
+    "Your error handling is like my workout routine - something we both know should exist but doesn't 💪",
+    "This code structure is more chaotic than my Instagram feed, and that's saying something! 📱",
+    "Tabs vs spaces? You're really out here using both like it's a fashion fusion moment 💃",
+
+    // Variable naming and declaration
+    "Your variable names are shorter than my patience, and that's saying something 🙄",
+    "Bestie, 'data' is not a personality trait, it's a lazy variable name 💁‍♀️",
+    "These variable names are giving me 'keyboard smash' energy. Were you having a moment? ⌨️",
+    "Your var declarations are so 2015. Let's get you modernized, sweetie 💅",
+    "Did you name these variables after your ex's? Because they're all toxic 🚩",
+    "Not you using 'temp' as a variable name like it's going to be temporary... it's been 84 years 👵",
+    "These global variables are like gossip - they get everywhere and cause nothing but drama 🗣️",
+    "Naming variables like 'myInt' is giving very much 'hello fellow kids' energy 👋",
+    "Your variable scoping is more mysterious than my skincare routine, and that's classified 🧴",
+    "Thing1, thing2? Dr. Seuss called, he wants his naming convention back 📚",
+
+    // Function woes
+    "This function is doing more things than my multitasking queen era 👑",
+    "Your functions are like my commitment issues - they never return what they promise 🚩",
+    "This callback hell is deeper than my emotional baggage, and that's concerning 🧳",
+    "Sweetie, this function is longer than my Starbucks order, and I'm high maintenance ☕",
+    "These parameter names are giving me 'bottom of keyboard row' realness ⌨️",
+    "Your recursive function is like my online shopping spiral - it never ends 🛍️",
+    "Not the function returning undefined when we specifically asked for a value 🙄",
+    "This function has more side effects than my last relationship 💔",
+    "Your error handling is more optional than my gym membership 🏋️‍♀️",
+    "These nested callbacks are messier than my dating history 📱",
+
+    // Code structure and style
+    "The indentation is more inconsistent than my sleep schedule 😴",
+    "Your code structure is giving very much 'I'll fix it later' energy 🔄",
+    "This file organization is chaotic evil and not in a cute way 📁",
+    "The spacing in this code is more random than my mood swings 🎭",
+    "Your git commit messages are shorter than my attention span 📝",
+    "This conditional logic is more circular than my weekend plans 🔄",
+    "The code duplication is more frequent than my coffee runs ☕",
+    "Your regex is scarier than my credit card statement 💳",
+    "These magic strings are more mysterious than my relationship status 💫",
+    "The commenting style is more sporadic than my workout routine 💪",
+
+    // Performance and optimization
+    "This O(n²) complexity is giving me anxiety, bestie 😰",
+    "Your memory management is leakier than my gossip group chat 📱",
+    "This optimization attempt is more half-hearted than my diet plans 🥗",
+    "Your cache invalidation is more frequent than my mood changes 🎭",
+    "These nested loops are deeper than my philosophical thoughts at 3 AM 🌙",
+    "Your database queries are slower than my Monday morning motivation 💤",
+    "This memory allocation is more wasteful than my online shopping habits 🛍️",
+    "Your API calls are needier than my cat at 6 AM 😺",
+    "These async operations are more unreliable than my ex's texts 📱",
+    "Your promise chain is longer than my skincare routine 💆‍♀️",
+
+    // Testing and documentation
+    "The test coverage is more patchy than my attempt at maintaining friendships 👥",
+    "Your documentation is like my diary - blank and full of good intentions 📖",
+    "These unit tests are more fragile than my ego 💔",
+    "Your API documentation is vaguer than my plans for the future 🔮",
+    "The test scenarios are more basic than my coffee order ☕",
+    "Your error messages are more cryptic than my dating app bio 📱",
+    "These code comments are more outdated than my Instagram feed 📸",
+    "Your debugging logs are messier than my weekend plans 📅",
+    "The test environment is more unstable than my life choices 🎲",
+    "Your deployment strategy is scarier than my commitment issues 🚀",
+
+    // Security and validation
+    "This input validation is more permissive than my cheat day rules 🍕",
+    "Your security measures are thinner than my patience on a Monday 😤",
+    "These permissions are more open than my DMs during hot girl summer 📱",
+    "Your password handling is shadier than my ex's story 🕶️",
+    "This authentication logic is more basic than my breakfast choices 🥐",
+    "Your CORS policy is more restrictive than my diet resolutions 🥗",
+    "These security tokens are more exposed than my vacation photos 🏖️",
+    "Your encryption strategy is weaker than my impulse control 🔐",
+    "This access control is more random than my spotify shuffle 🎵",
+    "Your data sanitization is more optional than my workout routine 🧼",
+
+    // Architecture and design
+    "This design pattern is more outdated than my high school photos 📸",
+    "Your microservices are more coupled than my toxic relationships 🤝",
+    "These dependencies are needier than my last Tinder match 📱",
+    "Your service layer is thinner than my excuses for being late ⏰",
+    "This architecture is more layered than my trust issues 🧅",
+    "Your state management is messier than my bedroom 🛏️",
+    "These interfaces are more brittle than my new year resolutions 📝",
+    "Your module structure is more confusing than my family tree 🌳",
+    "This inheritance hierarchy is deeper than my philosophical tweets 🐦",
+    "Your design decisions are more questionable than my life choices 🤔",
+
+    // Deployment and DevOps
+    "This deployment script is flakier than my skincare routine 💆‍♀️",
+    "Your CI/CD pipeline is more broken than my sleep schedule 😴",
+    "These environment variables are more exposed than my beach photos 🏖️",
+    "Your docker setup is more complicated than my relationship status 🐳",
+    "This kubernetes config is messier than my closet 👔",
+    "Your build process is slower than my response texts 📱",
+    "These deployment logs are more dramatic than my reality TV shows 📺",
+    "Your infrastructure is more unstable than my dating life 💔",
+    "This monitoring setup is more blind than my dating choices 👀",
+    "Your scaling strategy is more reactive than my skincare routine 📈",
+
+    // Code review and collaboration
+    "These PR comments are saltier than my margarita 🍸",
+    "Your merge conflicts are more frequent than my hair appointments 💇‍♀️",
+    "This code ownership is more disputed than my Netflix password 📺",
+    "Your git history is messier than my weekend plans 📅",
+    "These branch names are longer than my coffee order ☕",
+    "Your code reviews are more delayed than my doctor's appointments ⏰",
+    "This collaboration strategy is more chaotic than my group chats 📱",
+    "Your versioning is more confusing than my relationship status 💑",
+    "These release notes are vaguer than my weekend plans 📝",
+    "Your hotfixes are more frequent than my outfit changes 👗"
+];
+
+        function getRandomRoasts() {
+            const numRoasts = Math.floor(Math.random() * 3) + 1;
+            const selectedRoasts = new Set();
+            
+            while (selectedRoasts.size < numRoasts) {
+                const randomIndex = Math.floor(Math.random() * snarkyComments.length);
+                selectedRoasts.add(snarkyComments[randomIndex]);
+            }
+            
+            return Array.from(selectedRoasts).join('\n\n');
+        }
+
+        function roastCode() {
+            const code = document.getElementById('codeInput').value;
+            const roastOutput = document.getElementById('roastOutput');
+            const copyButton = document.getElementById('copyButton');
+            
+            if (!code.trim()) {
+                roastOutput.textContent = "Bestie, I can't roast what isn't there! Give me some code to work with! 💁‍♀️";
+                return;
+            }
+
+            const roast = getRandomRoasts();
+            roastOutput.textContent = roast;
+            copyButton.style.display = 'block';
+        }
+
+        function copyRoast() {
+            const roast = document.getElementById('roastOutput').textContent;
+            navigator.clipboard.writeText(roast);
+            
+            const copyButton = document.getElementById('copyButton');
+            const originalText = copyButton.textContent;
+            copyButton.textContent = '✓';
+            
+            setTimeout(() => {
+                copyButton.textContent = originalText;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
