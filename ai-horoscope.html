@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- [Previous HEAD content remains exactly the same] -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Cosmic Joy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FFF6E9, #FFE5F1, #E5F9FF);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header {
+            margin: 20px 0 40px;
+        }
+
+        .title {
+            font-size: 4em;
+            color: #FF3399;
+            text-shadow: 2px 2px 4px rgba(255, 51, 153, 0.3);
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+
+        .zodiac-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zodiac-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 51, 153, 0.2);
+        }
+
+        .zodiac-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #FFE5F1, #E5F9FF);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .zodiac-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .zodiac-symbol {
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FF3399, #FF9933);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .zodiac-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .prediction-box {
+            display: none;
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(255, 51, 153, 0.15);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .prediction-box.visible {
+            display: block;
+        }
+
+        .prediction-text {
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .lucky-numbers {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .lucky-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #FF3399, #FF9933);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .share-button {
+            background: linear-gradient(45deg, #FF3399, #FF9933);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .share-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 51, 153, 0.3);
+        }
+
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            animation: sparkleAnim 1s forwards;
+        }
+
+        @keyframes sparkleAnim {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        .streak-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .streak-flame {
+            font-size: 1.5em;
+            animation: flameFlicker 1s infinite;
+        }
+
+        @keyframes flameFlicker {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Grid View -->
+        <div id="grid-view" class="view active">
+            <div class="header animate__animated animate__bounceIn">
+                <h1 class="title">✨ Cosmic Joy ✨</h1>
+                <p class="subtitle">Pick Your Sign for Today's Magic!</p>
+            </div>
+            <div class="zodiac-grid">
+                <!-- Signs will be added by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Reading View -->
+        <div id="reading-view" class="view">
+            <button class="back-button" onclick="showGridView()">Back to Signs</button>
+            <div class="selected-sign">
+                <!-- Selected sign details will be inserted here -->
+            </div>
+            <div class="reading-card">
+                <div class="reading-section">
+                    <h3>✨ Your Cosmic Message</h3>
+                    <p class="reading-text" id="prediction-text"></p>
+                </div>
+                
+                <div class="reading-section">
+                    <h3>🎯 Lucky Numbers</h3>
+                    <div class="lucky-numbers"></div>
+                </div>
+                
+                <div class="reading-section">
+                    <h3>💫 Power Zones</h3>
+                    <p class="reading-text" id="power-zones"></p>
+                </div>
+
+                <button class="share-button" onclick="shareReading()">
+                    Share Your Magic ✨
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // All our data
+        const zodiacSigns = [
+            { symbol: "♈", name: "Aries", element: "Fire", ruler: "Mars" },
+            { symbol: "♉", name: "Taurus", element: "Earth", ruler: "Venus" },
+            { symbol: "♊", name: "Gemini", element: "Air", ruler: "Mercury" },
+            { symbol: "♋", name: "Cancer", element: "Water", ruler: "Moon" },
+            { symbol: "♌", name: "Leo", element: "Fire", ruler: "Sun" },
+            { symbol: "♍", name: "Virgo", element: "Earth", ruler: "Mercury" },
+            { symbol: "♎", name: "Libra", element: "Air", ruler: "Venus" },
+            { symbol: "♏", name: "Scorpio", element: "Water", ruler: "Pluto" },
+            { symbol: "♐", name: "Sagittarius", element: "Fire", ruler: "Jupiter" },
+            { symbol: "♑", name: "Capricorn", element: "Earth", ruler: "Saturn" },
+            { symbol: "♒", name: "Aquarius", element: "Air", ruler: "Uranus" },
+            { symbol: "♓", name: "Pisces", element: "Water", ruler: "Neptune" }
+        ];
+
+        const predictions = [
+            "Get ready for an AMAZING surprise today! Your energy is absolutely MAGNETIC! ⚡",
+            "WOW! The stars are literally dancing for you! Something INCREDIBLE is coming your way! 🌟",
+            "Your aura is GLOWING with potential! Time to shine like never before! ✨",
+            "JACKPOT DAY! Everything you touch turns to gold today! 🎯",
+            "The universe is sending you a VIP ticket to success! Grab it! 🎫",
+            "Your cosmic power level is OFF THE CHARTS! You're unstoppable! 🚀",
+            "BREAKTHROUGH ALERT! Your dreams are about to become reality! 🌈",
+            "You're entering your BEST chapter yet! The universe is your playground! 🎪",
+            "SUCCESS is chasing YOU today! Keep being your awesome self! 🏆",
+            "Your lucky stars are putting on a SPECTACULAR show just for you! 🎭"
+        ];
+
+        const powerZones = [
+            "Love & Relationships 💕",
+            "Career & Success 💼",
+            "Health & Vitality ❤️",
+            "Wealth & Abundance 💰",
+            "Creativity & Expression 🎨",
+            "Learning & Growth 📚",
+            "Adventure & Travel ✈️",
+            "Friendship & Connection 🤝"
+        ];
+
+        // Core functionality
+        function createZodiacGrid() {
+            const grid = document.querySelector('.zodiac-grid');
+            zodiacSigns.forEach(sign => {
+                const card = document.createElement('div');
+                card.className = 'zodiac-card animate__animated animate__fadeIn';
+                card.innerHTML = `
+                    <div class="zodiac-symbol">${sign.symbol}</div>
+                    <div class="zodiac-name">${sign.name}</div>
+                `;
+                card.addEventListener('click', () => showReading(sign));
+                grid.appendChild(card);
+            });
+        }
+
+        function showReading(sign) {
+            // Update selected sign display
+            const selectedSignDiv = document.querySelector('.selected-sign');
+            selectedSignDiv.innerHTML = `
+                <div class="zodiac-symbol">${sign.symbol}</div>
+                <div class="zodiac-name">${sign.name}</div>
+            `;
+
+            // Generate readings
+            const prediction = predictions[Math.floor(Math.random() * predictions.length)];
+            document.getElementById('prediction-text').textContent = prediction;
+
+            // Generate lucky numbers
+            const luckyNumbersDiv = document.querySelector('.lucky-numbers');
+            luckyNumbersDiv.innerHTML = '';
+            generateLuckyNumbers().forEach(num => {
+                const numDiv = document.createElement('div');
+                numDiv.className = 'lucky-number animate__animated animate__bounceIn';
+                numDiv.textContent = num;
+                luckyNumbersDiv.appendChild(numDiv);
+            });
+
+            // Generate power zones
+            const powerZonesText = powerZones[Math.floor(Math.random() * powerZones.length)];
+            document.getElementById('power-zones').textContent = `Your power zone today: ${powerZonesText}`;
+
+            // Switch views with animation
+            document.getElementById('grid-view').classList.remove('active');
+            document.getElementById('reading-view').classList.add('active');
+
+            // Trigger celebration effects
+            celebrate();
+            createSparkleTrail(event);
+        }
+
+        function showGridView() {
+            document.getElementById('reading-view').classList.remove('active');
+            document.getElementById('grid-view').classList.add('active');
+        }
+
+        function generateLuckyNumbers() {
+            const numbers = new Set();
+            while(numbers.size < 3) {
+                numbers.add(Math.floor(Math.random() * 99) + 1);
+            }
+            return Array.from(numbers);
+        }
+
+        // Animation and effects
+        function createFloatingEmojis() {
+            const emojis = ['✨', '🌟', '💫', '⭐', '🌠'];
+            setInterval(() => {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + 'vw';
+                document.body.appendChild(emoji);
+                setTimeout(() => emoji.remove(), 10000);
+            }, 2000);
+        }
+
+        function createSparkleTrail(e) {
+            if (!e) return; // Guard clause for when event isn't available
+            const colors = ['#FF3399', '#FF9933', '#FFFF66', '#99FF33', '#33FFFF'];
+            for(let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = (e.pageX || window.innerWidth/2) + 'px';
+                    sparkle.style.top = (e.pageY || window.innerHeight/2) + 'px';
+                    sparkle.style.width = Math.random() * 10 + 5 + 'px';
+                    sparkle.style.height = sparkle.style.width;
+                    sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    sparkle.style.animation = 'sparkle-fade 1s ease-out forwards';
+                    document.body.appendChild(sparkle);
+                    setTimeout(() => sparkle.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
+        function celebrate() {
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            document.body.appendChild(celebration);
+
+            for(let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                celebration.appendChild(confetti);
+            }
+
+            setTimeout(() => celebration.remove(), 3000);
+        }
+
+        function shareReading() {
+            const prediction = document.getElementById('prediction-text').textContent;
+            const shareText = `🌟 My Cosmic Reading:\n\n${prediction}\n\nGet your reading at Cosmic Joy! ✨`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Cosmic Reading',
+                    text: shareText
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Reading copied to clipboard! ✨');
+                });
+            }
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            createZodiacGrid();
+            createFloatingEmojis();
+            document.addEventListener('mousemove', (e) => {
+                if (Math.random() < 0.1) { // Only create sparkles 10% of the time
+                    createSparkleTrail(e);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

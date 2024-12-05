@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Gen Z App Idea Generator</title>
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes cardFlip {
+            0% { transform: perspective(1000px) rotateX(0deg); opacity: 1; }
+            20% { transform: perspective(1000px) rotateX(-90deg); opacity: 0; }
+            80% { transform: perspective(1000px) rotateX(90deg); opacity: 0; }
+            100% { transform: perspective(1000px) rotateX(0deg); opacity: 1; }
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 5px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.3), 0 0 15px rgba(255,255,255,0.1); }
+            50% { box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4); }
+            100% { box-shadow: 0 0 5px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.3), 0 0 15px rgba(255,255,255,0.1); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shine {
+            0% { background-position: -100% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(1000px) rotate(720deg); opacity: 0; }
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 48rem;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .gradient-text {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #fff, #ffd700, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+            width: 800px;
+            margin: 1rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+            min-height: 300px;
+            position: relative;
+            transition: transform 0.3s ease;
+            background-image: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 200%;
+            animation: sparkle 3s linear infinite;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.6rem;
+            padding: 2px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #00ff88, #00bcd4);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .concept {
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+            animation: pulse 2s infinite;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .tag {
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) backwards;
+        }
+
+        .tags-container .tag:nth-child(1) { animation-delay: 0.1s; }
+        .tags-container .tag:nth-child(2) { animation-delay: 0.2s; }
+        .tags-container .tag:nth-child(3) { animation-delay: 0.3s; }
+        .tags-container .tag:nth-child(4) { animation-delay: 0.4s; }
+        .tags-container .tag:nth-child(5) { animation-delay: 0.5s; }
+        .tags-container .tag:nth-child(6) { animation-delay: 0.6s; }
+
+        .tag:hover {
+            transform: scale(1.05) rotate(-2deg);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .feature-tag {
+            color: #ffd700;
+        }
+
+        .monetization-tag {
+            color: #00ff88;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .button {
+            padding: 1.25rem 2.5rem;
+            border-radius: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            outline: none;
+        }
+
+        .primary-button {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .primary-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        .secondary-button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .secondary-button:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .secondary-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(45deg, #00ff88, #00bcd4);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            pointer-events: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 640px) {
+            .gradient-text {
+                font-size: 2.5rem;
+            }
+            .stat-pill {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+            .concept {
+                font-size: 1.5rem;
+            }
+            .button {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        .achievement {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+        }
+
+        @keyframes slideDown {
+            0% { transform: translate(-50%, -100%); }
+            100% { transform: translate(-50%, 0); }
+        }
+
+        .streak-multiplier {
+            position: absolute;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="gradient-text">Gen Z App Idea Generator</h1>
+            <div class="stats-bar">
+                <div class="stat-pill" id="levelPill">
+                    👑 Level: ROOKIE
+                </div>
+                <div class="stat-pill" id="streakPill">
+                    🔥 Streak: 0
+                </div>
+                <div class="stat-pill" id="totalPill">
+                    ⭐ Total: 0
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="mainCard">
+            <div id="content" class="empty-state">
+                <div class="empty-state-icon">🚀</div>
+                <p>Click generate to create your next BILLION DOLLAR idea! ✨</p>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button id="generateBtn" class="button primary-button">
+                ✨ Generate Epic Idea
+            </button>
+            <button id="shareBtn" class="button secondary-button" disabled>
+                🚀 Share
+            </button>
+        </div>
+    </div>
+
+    <script>
+    const prompts = [
+        // Productivity & Work
+        "AI career coach that roasts your LinkedIn like a bestie 🔥",
+        "Resume builder that makes you sound like the main character fr fr",
+        "Meeting summarizer that speaks in viral TikTok quotes",
+        "Email writer with extremely elite rizz generator",
+        "Project manager AI that assigns tasks with meme reactions",
+        "Slack message rewriter for perfect corporate tone",
+        "Interview prep coach with Gen Z energy",
+        "Work excuse generator with believable stories",
+        "Professional email translator to Gen Z speak",
+        
+        // Education & Learning
+        "Study buddy that explains calculus with pop culture references 📚",
+        "Homework helper that makes everything into viral TikTok scripts",
+        "Language tutor that teaches through trending songs lyrics",
+        "Essay writer that speaks in your favorite influencer's style",
+        "Note taker that converts lectures into aesthetic mind maps",
+        "Math problem solver with meme explanations",
+        "History teacher that explains everything through TikTok trends",
+        "Chemistry tutor that uses food analogies",
+        "Literature analyzer with modern pop culture references",
+        
+        // Entertainment & Social
+        "AI bestie for late night random thoughts and deep talks 💫",
+        "Dating profile optimizer with that chronically online energy",
+        "Story generator for your Instagram that's giving main character",
+        "Party planner AI that passes the vibe check every time",
+        "Spotify playlist curator based on your chaotic energy",
+        "TikTok trend predictor with viral potential score",
+        "Instagram caption generator with elite engagement",
+        "Dating app message writer with rizz level 100",
+        "Social media content calendar with perfect timing",
+        
+        // Creative & Content
+        "AI meme generator that's actually funny fr fr",
+        "YouTube script writer with no miss hooks",
+        "TikTok transition idea generator for viral edits",
+        "Instagram aesthetic planner for cohesive feeds",
+        "Podcast topic generator with hot takes",
+        "Blog post writer with extremely online voice",
+        "YouTube thumbnail designer that gets clicks",
+        "Twitter thread writer for max engagement",
+        "Reels concept generator with trending sounds",
+        
+        // Lifestyle & Wellness
+        "Gym workout explainer in Gen Z terms",
+        "Skincare routine builder with that glass skin energy",
+        "Meditation guide that actually gets the vibes",
+        "Recipe generator for aesthetic food pics",
+        "Fashion outfit generator with current aesthetics",
+        "Morning routine optimizer for that girl energy",
+        "Self-care reminder with iconic energy",
+        "Plant care guide with cottage core vibes",
+        "Room decorator with Pinterest-worthy suggestions",
+        
+        // Gaming & Streaming
+        "Gaming strategy coach with pro tips",
+        "Stream title generator for max views",
+        "Gaming highlight clip editor",
+        "Twitch chat moderator with personality",
+        "Gaming session scheduler for squad goals",
+        "Streaming overlay designer with clean aesthetics",
+        "Gaming challenge generator for content",
+        "Esports commentary generator",
+        "Gaming meme creator for your discord",
+        
+        // Tech & Development
+        "Code reviewer that explains in simple terms",
+        "Bug fixer with actually helpful suggestions",
+        "README.md writer with personality",
+        "Variable namer with creative flair",
+        "Git commit message generator that's professional fr",
+        "Documentation writer that's not boring",
+        "API documentation explorer with examples",
+        "Code comment generator with humor",
+        "Tech stack advisor with honest opinions"
+      ];
+      
+      const features = [
+        // Engagement Features
+        "daily streaks",
+        "achievement badges",
+        "level system",
+        "progress tracking",
+        "reward points",
+        "mystery rewards",
+        "daily challenges",
+        "weekly missions",
+        "custom milestones",
+        
+        // Social Features
+        "friend battles",
+        "team competitions",
+        "social sharing",
+        "leaderboards",
+        "group challenges",
+        "collaborative tasks",
+        "friend referrals",
+        "community voting",
+        "social feed",
+        
+        // Personalization
+        "custom themes",
+        "AI avatars",
+        "profile badges",
+        "personal stats",
+        "custom emojis",
+        "style presets",
+        "mood tracking",
+        "goal setting",
+        "personal dashboard",
+        
+        // Technical Features
+        "offline mode",
+        "cloud sync",
+        "quick export",
+        "data insights",
+        "auto-save",
+        "cross-platform",
+        "voice commands",
+        "dark mode",
+        "quick actions",
+        
+        // Content Features
+        "trending topics",
+        "content calendar",
+        "viral templates",
+        "auto-scheduling",
+        "content analytics",
+        "hashtag generator",
+        "viral predicts",
+        "trend alerts",
+        "engagement stats"
+      ];
+      
+      const monetization = [
+        "pro subscription",
+        "premium filters",
+        "exclusive themes",
+        "priority features",
+        "limited drops",
+        "creator marketplace",
+        "boost tokens",
+        "premium plugins",
+        "VIP access",
+        "custom badges",
+        "special effects",
+        "advanced analytics",
+        "team features",
+        "API access",
+        "white label options"
+      ];
+
+        let currentIdea = null;
+        let streak = 0;
+        let totalGenerated = 0;
+        let lastGenerateTime = 0;
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-10px';
+                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animation = `confetti ${Math.random() * 3 + 2}s linear`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function showAchievement(message) {
+            const achievement = document.createElement('div');
+            achievement.className = 'achievement';
+            achievement.innerHTML = message;
+            document.body.appendChild(achievement);
+            setTimeout(() => achievement.remove(), 3000);
+        }
+
+        function showStreakMultiplier(x, y) {
+            const multiplier = document.createElement('div');
+            multiplier.className = 'streak-multiplier';
+            multiplier.innerHTML = `${streak}x COMBO! 🔥`;
+            multiplier.style.left = x + 'px';
+            multiplier.style.top = y + 'px';
+            document.body.appendChild(multiplier);
+            setTimeout(() => multiplier.remove(), 1000);
+        }
+
+        function checkAchievements() {
+            if (streak === 10) showAchievement('🎯 Achievement Unlocked: Perfect 10!');
+            if (streak === 25) showAchievement('🔥 Achievement Unlocked: Unstoppable!');
+            if (streak === 50) showAchievement('👑 Achievement Unlocked: Legendary Status!');
+            if (totalGenerated === 100) showAchievement('🏆 Achievement Unlocked: Idea Machine!');
+        }
+
+        function generateIdea(event) {
+            const now = Date.now();
+            if (now - lastGenerateTime < 500) return; // Prevent spam clicking
+            lastGenerateTime = now;
+
+            const btn = document.getElementById('generateBtn');
+            btn.innerHTML = '✨ Generating...';
+            btn.disabled = true;
+
+            // Add click effect
+            if (event) {
+                const x = event.clientX;
+                const y = event.clientY;
+                showStreakMultiplier(x, y);
+            }
+
+            setTimeout(() => {
+                const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+                const randomFeatures = Array.from({ length: 6 }, () => 
+                    features[Math.floor(Math.random() * features.length)]
+                );
+                const randomMonetization = Array.from({ length: 2 }, () => 
+                    monetization[Math.floor(Math.random() * monetization.length)]
+                );
+
+                currentIdea = {
+                    concept: randomPrompt,
+                    features: [...new Set(randomFeatures)],
+                    monetization: [...new Set(randomMonetization)]
+                };
+
+                streak++;
+                totalGenerated++;
+                
+                // Create confetti effect on milestone streaks
+                if (streak % 10 === 0) {
+                    createConfetti();
+                }
+
+                checkAchievements();
+                updateUI();
+
+                btn.innerHTML = '✨ Generate Epic Idea';
+                btn.disabled = false;
+
+                // Add magnetic effect to the card
+                const card = document.getElementById('mainCard');
+                card.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    card.style.transform = 'none';
+                }, 200);
+            }, 500);
+        }
+
+        function getStreakLevel() {
+            if (streak >= 50) return { emoji: "👑", title: "LEGENDARY", color: "#ffd700" };
+            if (streak >= 30) return { emoji: "⚡", title: "EPIC", color: "#ff6b6b" };
+            if (streak >= 20) return { emoji: "🔥", title: "FIRE", color: "#00ff88" };
+            if (streak >= 10) return { emoji: "✨", title: "RISING", color: "#00bcd4" };
+            return { emoji: "🌟", title: "ROOKIE", color: "#ffffff" };
+        }
+
+        function updateUI() {
+            const content = document.getElementById('content');
+            const shareBtn = document.getElementById('shareBtn');
+            const streakLevel = getStreakLevel();
+
+            // Update stats with smooth transition
+            document.querySelector('#levelPill').innerHTML = 
+                `${streakLevel.emoji} Level: ${streakLevel.title}`;
+            document.querySelector('#streakPill').innerHTML = 
+                `🔥 Streak: ${streak}`;
+            document.querySelector('#totalPill').innerHTML = 
+                `⭐ Total: ${totalGenerated}`;
+
+            if (currentIdea) {
+                content.style.animation = 'cardFlip 1s ease-in-out';
+                content.addEventListener('animationend', () => {
+                    content.style.animation = '';
+                });
+                
+                content.innerHTML = `
+                    <div class="section">
+                        <div class="section-title">🚀 THE NEXT BIG THING</div>
+                        <div class="concept" style="animation: shake 0.5s ease-in-out">${currentIdea.concept}</div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">⭐ EPIC FEATURES</div>
+                        <div class="tags-container">
+                            ${currentIdea.features.map(feature => 
+                                `<span class="tag feature-tag">${feature}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title">💰 MONEY MAKERS</div>
+                        <div class="tags-container">
+                            ${currentIdea.monetization.map(item => 
+                                `<span class="tag monetization-tag">${item}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+                shareBtn.disabled = false;
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `🎉 ${message}`;
+            document.body.appendChild(toast);
+            
+            // Create celebration confetti
+            createConfetti();
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+
+        function shareIdea() {
+            if (!currentIdea) return;
+            
+            const text = `
+🚀 EPIC APP IDEA: ${currentIdea.concept}
+
+⭐ KILLER FEATURES:
+${currentIdea.features.map(f => '• ' + f).join('\n')}
+
+💰 MONETIZATION:
+${currentIdea.monetization.map(m => '• ' + m).join('\n')}
+
+Generated with the Epic App Idea Generator 🔥
+            `;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Your billion-dollar idea is copied! 🚀');
+            });
+        }
+
+        // Initialize event listeners
+        document.getElementById('generateBtn').addEventListener('click', generateIdea);
+        document.getElementById('shareBtn').addEventListener('click', shareIdea);
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                generateIdea();
+            }
+            if (e.code === 'KeyS' && !document.getElementById('shareBtn').disabled) {
+                shareIdea();
+            }
+        });
+
+        // Initialize first generation
+        generateIdea();
+    </script>
+</body>
+</html>

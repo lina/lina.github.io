@@ -26,21 +26,34 @@
       gap: 3rem;
     }
 
+    .stats {
+      position: fixed;
+      top: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
+      display: flex;
+      gap: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
+      border-radius: 9999px;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
     .title {
       font-size: 4rem;
       font-weight: bold;
       text-shadow: 0 0 20px rgba(255,215,0, 0.5);
       animation: pulse 2s infinite;
-      margin-bottom: 2rem;
     }
 
     .cookie-container {
       width: 300px;
       height: 300px;
       position: relative;
-      cursor: pointer;
-      transform-style: preserve-3d;
       perspective: 1000px;
+      cursor: pointer;
       animation: bounce 1.5s infinite;
     }
 
@@ -56,89 +69,44 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmYmJmMjQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMiAxMmgyTDExLjUgNC41YTQuOCA0LjggMCAwIDEgNyA3TTE1LjUgMTEuNUwyMiAxMmgtMmwtNy41IDcuNWE0LjggNC44IDAgMCAxLTctN0wxMiAxNiIvPjwvc3ZnPg==");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5));
-    }
-
-    .cookie-bottom {
-      transform: translateZ(-2px);
-      opacity: 0.8;
-    }
-
-    .cookie-top {
-      transform: translateZ(2px);
-    }
-
-    .cookie-container:hover .cookie-wrapper {
-      transform: scale(1.2) rotate(5deg);
-    }
-
-    .cookie-sparkle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: #fef3c7;
-      border-radius: 50%;
-      animation: cookieSparkle 1.5s infinite;
-    }
-
-    @keyframes cookieSparkle {
-      0%, 100% { transform: scale(0); opacity: 0; }
-      50% { transform: scale(1); opacity: 1; }
-    }
-
-    .cookie-half {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      background: linear-gradient(135deg, #fbbf24, #d97706);
-      box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s;
+      border-radius: 50% 50% 20% 20%;
+      background: linear-gradient(135deg, #fcd34d, #d97706);
+      box-shadow: 
+        inset -5px -5px 15px rgba(0,0,0,0.2),
+        inset 5px 5px 15px rgba(255,255,255,0.5),
+        0 0 20px rgba(251, 191, 36, 0.5);
+      transform-origin: center bottom;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .cookie-top {
-      transform: rotateX(-10deg);
+      clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
+      transform: translateY(-10px) rotateX(5deg);
     }
 
     .cookie-bottom {
-      transform: rotateX(10deg);
+      clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+      transform: translateY(10px) rotateX(-5deg);
       background: linear-gradient(135deg, #d97706, #92400e);
     }
 
+    .cookie-texture {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(#92400e 1px, transparent 2px);
+      background-size: 10px 10px;
+      opacity: 0.1;
+    }
+
     .cookie-container:hover .cookie-top {
-      transform: rotateX(-20deg) translateY(-10px);
+      transform: translateY(-20px) rotateX(25deg);
     }
 
     .cookie-container:hover .cookie-bottom {
-      transform: rotateX(20deg) translateY(10px);
-    }
-
-    .cookie-shadow {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.2);
-      filter: blur(10px);
-      transform: translateY(20px) rotateX(90deg) scale(0.8);
-    }
-
-    .bomb-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 40px;
-      height: 40px;
-      animation: pulse 1s infinite;
-      z-index: 2;
+      transform: translateY(20px) rotateX(-25deg);
     }
 
     @keyframes bounce {
@@ -148,13 +116,12 @@
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
     }
 
     .particle {
       position: absolute;
       pointer-events: none;
-      border-radius: 50%;
       animation: explode var(--duration) ease-out forwards;
     }
 
@@ -183,47 +150,16 @@
       box-shadow: 0 0 50px rgba(251, 191, 36, 0.3);
       max-width: 400px;
       animation: fortuneAppear 0.5s ease-out forwards;
-      opacity: 0;
       text-align: center;
       border: 4px solid #fbbf24;
+      color: #1f2937;
     }
 
     .fortune-text {
       font-size: 1.75rem;
       font-weight: bold;
       margin-bottom: 1.5rem;
-      color: #1f2937;
       line-height: 1.4;
-    }
-
-    .sparkle {
-      position: absolute;
-      background: #fef3c7;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      animation: sparkle 1s ease-out forwards;
-    }
-
-    @keyframes sparkle {
-      0% {
-        transform: translate(var(--x), var(--y)) scale(0);
-        opacity: 1;
-      }
-      50% {
-        transform: translate(
-          calc(var(--x) + var(--dx) * 100px),
-          calc(var(--y) + var(--dy) * 100px)
-        ) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translate(
-          calc(var(--x) + var(--dx) * 200px),
-          calc(var(--y) + var(--dy) * 200px)
-        ) scale(0);
-        opacity: 0;
-      }
     }
 
     .reset-btn {
@@ -236,7 +172,6 @@
       border-radius: 9999px;
       cursor: pointer;
       transition: all 0.2s;
-      margin-top: 1rem;
       text-transform: uppercase;
     }
 
@@ -245,35 +180,14 @@
       box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
     }
 
-    .stats {
-      position: fixed;
-      top: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.5rem;
-      display: flex;
-      gap: 2rem;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1rem 2rem;
-      border-radius: 9999px;
-      backdrop-filter: blur(10px);
-      z-index: 100;
-    }
-
-    @keyframes cookieWiggle {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(-10deg); }
-      75% { transform: rotate(10deg); }
-    }
-
-    @keyframes cookieAppear {
+    @keyframes fortuneAppear {
       0% { 
         opacity: 0;
-        transform: scale(0.5) rotate(-20deg);
+        transform: translate(-50%, -50%) scale(0.8) rotate(-5deg);
       }
       100% { 
         opacity: 1;
-        transform: scale(1) rotate(0deg);
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
       }
     }
 
@@ -288,14 +202,23 @@
       }
     }
 
-    @keyframes fortuneAppear {
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--confetti-color);
+      opacity: 0;
+      animation: confettiFall var(--fall-duration) ease-in forwards var(--fall-delay);
+    }
+
+    @keyframes confettiFall {
       0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8) rotate(-5deg);
+        opacity: 1;
+        transform: translateY(-100vh) rotate(0deg);
       }
       100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 0;
+        transform: translateY(100vh) rotate(720deg);
       }
     }
 
@@ -334,27 +257,22 @@
     <div class="cookie-container" id="cookie">
       <div class="cookie-wrapper">
         <div class="cookie-shadow"></div>
-        <div class="cookie-half cookie-bottom"></div>
-        <div class="cookie-half cookie-top"></div>
-        <svg class="bomb-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
-          <circle cx="12" cy="12" r="8"/>
-          <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
-        </svg>
+        <div class="cookie-half cookie-bottom">
+          <div class="cookie-texture"></div>
+        </div>
+        <div class="cookie-half cookie-top">
+          <div class="cookie-texture"></div>
+        </div>
       </div>
-      <!-- Sparkles will be added here by JavaScript -->
     </div>
-    
-    <script>
-      // Initialize sparkles
-      createSparkles();
-      // Start with some confetti
-      createConfetti();
-    </script>
   </div>
 
+  <audio id="explosion-sound" preload="auto">
+    <source src="data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAABQAABNvQAICxUVGBwfIyYqLS0wMzY6PT1AREVIS0tOUVRYW19fYmVpbG9vc3Z6fX1/goaJjY2QkpWZnJyfn6Kkp6qqrbCztbi4u77BxcXIys3Q0NDT1dja2tze4OPj5efo6+vt7/Hz8/X3+fz8/v8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAC4OFEzzJAAAAAAAAAAAAAAAAAAAAAAD/8sAwAANkAg3GtKGQACLn3x8CAQBAE7E6w4oJgOB8OAgCALfD4fggCAIBgGAYBD8fgf+B/4IAQD/3w/BACAIAgD/BBLl/8EP/8H/lw/wQBAH/4YpEBAMAwDAMAwDAMEAg/B//+WKQEAwDAMAwDAMAwQCD8H//5YogIDgOA4DgOA4DgIBB+D//8sUQEBwHAcBwHAcBwEAg/B//+WKQBAMAwDAMAwDAMDwfg///K/qQAAEIAD//7v+pAAAARAAAAAAAAAAAAAX6qAAAgSAAAA+n/sWqAAAgAAAAB9P/YtQAAAEAAAAA+n/sWoAAACAAAAAH0/9i1" type="audio/mp3">
+  </audio>
+
   <script>
-    // ... [Previous JavaScript remains the same] ...
-    const fortunes = [
+    const FORTUNES = [
       "🚀 YOUR NEXT STARTUP WILL BE WORTH $999 TRILLION",
       "⚡ YOU'LL CREATE AN AI THAT ONLY GENERATES MEMES",
       "💎 YOUR CODE IS SO CLEAN IT MAKES SOAP JEALOUS",
@@ -377,13 +295,11 @@
       particle.style.left = x + 'px';
       particle.style.top = y + 'px';
       particle.style.background = color;
-      particle.style.width = '10px';
-      particle.style.height = '10px';
+      particle.style.setProperty('--duration', duration + 's');
       particle.style.setProperty('--x', x + 'px');
       particle.style.setProperty('--y', y + 'px');
       particle.style.setProperty('--dx', (Math.random() - 0.5) * 2);
       particle.style.setProperty('--dy', (Math.random() - 0.5) * 2);
-      particle.style.setProperty('--duration', duration + 's');
       document.body.appendChild(particle);
       setTimeout(() => particle.remove(), duration * 1000);
     }
@@ -398,6 +314,8 @@
     }
 
     function explode(x, y) {
+      document.getElementById('explosion-sound').play();
+
       // Create multiple layers of particles
       const colors = ['#fbbf24', '#f97316', '#ef4444', '#fef3c7'];
       for (let i = 0; i < 50; i++) {
@@ -405,23 +323,23 @@
           createParticle(x, y, colors[i % colors.length], 1 + Math.random());
         }, i * 20);
       }
-      
-      // Create shockwave
-      createShockwave(x, y);
-      
-      // Create sparkles
-      for (let i = 0; i < 30; i++) {
+
+      // Create multiple shockwaves
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => createShockwave(x, y), i * 100);
+      }
+
+      // Create confetti
+      for (let i = 0; i < 50; i++) {
         setTimeout(() => {
-          const sparkle = document.createElement('div');
-          sparkle.className = 'sparkle';
-          sparkle.style.left = x + 'px';
-          sparkle.style.top = y + 'px';
-          sparkle.style.setProperty('--x', x + 'px');
-          sparkle.style.setProperty('--y', y + 'px');
-          sparkle.style.setProperty('--dx', (Math.random() - 0.5) * 2);
-          sparkle.style.setProperty('--dy', (Math.random() - 0.5) * 2);
-          document.body.appendChild(sparkle);
-          setTimeout(() => sparkle.remove(), 1000);
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.setProperty('--confetti-color', colors[Math.floor(Math.random() * colors.length)]);
+          confetti.style.setProperty('--fall-duration', (Math.random() * 3 + 2) + 's');
+          confetti.style.setProperty('--fall-delay', (Math.random() * 2) + 's');
+          confetti.style.left = Math.random() * 100 + 'vw';
+          document.body.appendChild(confetti);
+          setTimeout(() => confetti.remove(), 5000);
         }, i * 50);
       }
     }
@@ -430,64 +348,18 @@
       const fortune = document.createElement('div');
       fortune.className = 'fortune';
       fortune.innerHTML = `
-        <div class="fortune-text">${fortunes[Math.floor(Math.random() * fortunes.length)]}</div>
+        <div class="fortune-text">${FORTUNES[Math.floor(Math.random() * FORTUNES.length)]}</div>
         <button class="reset-btn" onclick="reset()">CRUSH ANOTHER! 🚀</button>
       `;
       document.body.appendChild(fortune);
     }
 
-    function updateStats() {
-      document.getElementById('score').textContent = score;
+    function reset() {
+      document.querySelector('.fortune')?.remove();
+      document.querySelector('.cookie-container').style.display = 'block';
+      canClick = true;
+      combo++;
       document.getElementById('combo').textContent = combo;
     }
 
-    function reset() {
-      const fortune = document.querySelector('.fortune');
-      if (fortune) {
-        fortune.style.animation = 'fortuneDisappear 0.5s ease-out forwards';
-        setTimeout(() => fortune.remove(), 500);
-      }
-      
-      const cookieContainer = document.querySelector('.cookie-container');
-      cookieContainer.style.display = 'block';
-      cookieContainer.style.animation = 'cookieAppear 0.5s ease-out forwards';
-      
-      canClick = true;
-      combo++;
-      updateStats();
-    }
-
-    const originalTransform = window.getComputedStyle(document.querySelector('.cookie-wrapper')).transform;
-    
-    function animateCookie() {
-      const wrapper = document.querySelector('.cookie-wrapper');
-      wrapper.style.animation = 'cookieWiggle 0.5s ease-in-out';
-      wrapper.addEventListener('animationend', () => {
-        wrapper.style.animation = '';
-      }, { once: true });
-    }
-
-    // Add hover animation
-    document.querySelector('.cookie-container').addEventListener('mouseenter', animateCookie);
-
-    document.getElementById('cookie').addEventListener('click', (e) => {
-      if (!canClick) return;
-      canClick = false;
-      
-      const rect = e.target.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      
-      const container = document.querySelector('.cookie-container');
-      container.style.animation = 'fortuneDisappear 0.3s ease-out forwards';
-      setTimeout(() => container.style.display = 'none', 300);
-      explode(x, y);
-      
-      score += 1000 * combo;
-      updateStats();
-      
-      setTimeout(showFortune, 1000);
-    });
-  </script>
-</body>
-</html>
+    document.getElementById('cookie').addEventListener('click',
