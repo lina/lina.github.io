@@ -3,594 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Premium Swiftie Therapy ✨</title>
+    <title>🚀 Swiftie Lyrics Problem Blaster 🚀</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
+        @keyframes superGlow {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8)) brightness(1); }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.9)) brightness(1.2); }
+        }
+
+        @keyframes cosmic {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(2deg); }
+            75% { transform: translateY(15px) rotate(-2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         :root {
-            /* Primary Colors */
-            --primary: #FFB5E8;           /* Soft pink */
-            --primary-light: #FFC9EE;     /* Lighter pink */
-            --primary-dark: #FF9DE1;      /* Darker pink */
+            /* Ultra Vibrant Colors */
+            --neon-pink: #FF00FF;
+            --electric-blue: #00FFFF;
+            --plasma-green: #00FF9C;
+            --solar-yellow: #FFE600;
+            --cosmic-purple: #B24BFF;
+            --nova-orange: #FF6B2B;
             
-            /* Secondary Colors */
-            --secondary: #AEC6FF;         /* Soft blue */
-            --secondary-light: #C3D5FF;   /* Lighter blue */
-            --secondary-dark: #98B4FF;    /* Darker blue */
+            /* Dynamic Gradients */
+            --cosmic-gradient: linear-gradient(
+                45deg,
+                var(--neon-pink),
+                var(--electric-blue),
+                var(--plasma-green),
+                var(--solar-yellow),
+                var(--cosmic-purple),
+                var(--nova-orange)
+            );
             
-            /* Accent Colors */
-            --accent: #B8F7D4;            /* Mint green */
-            --accent-light: #CCFAE2;      /* Lighter mint */
-            --accent-dark: #A4F3C8;       /* Darker mint */
-            
-            /* Background Colors */
-            --bg-primary: #FFEEFF;        /* Very light pink */
-            --bg-secondary: #F0F4FF;      /* Very light blue */
-            --bg-accent: #F5FFFA;         /* Very light mint */
-            
-            /* Text Colors */
-            --text-primary: #2D3436;      /* Dark gray */
-            --text-secondary: #636E72;    /* Medium gray */
-            --text-light: #FFFFFF;        /* White */
-            
-            /* Premium Colors */
-            --premium-gold: #FFD700;      /* Premium gold */
-            --premium-rose: #FFB6C1;      /* Premium rose */
-            --premium-shine: #FFF7BC;     /* Premium shine */
-            
-            /* Status Colors */
-            --success: #00B894;           /* Success green */
-            --warning: #FDCB6E;           /* Warning yellow */
-            --error: #FF7675;             /* Error red */
-            
-            /* Shadow Colors */
-            --shadow-light: rgba(149, 157, 165, 0.1);
-            --shadow-medium: rgba(149, 157, 165, 0.2);
-            --shadow-dark: rgba(149, 157, 165, 0.3);
-        }
-
-        @property --gradient-angle {
-            syntax: '<angle>';
-            initial-value: 0deg;
-            inherits: false;
-        }
-
-        @keyframes gradient-rotation {
-            0% { --gradient-angle: 0deg; }
-            100% { --gradient-angle: 360deg; }
+            /* Glowing Effects */
+            --glow-primary: 0 0 20px rgba(255, 255, 255, 0.8);
+            --glow-secondary: 0 0 40px rgba(178, 75, 255, 0.6);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
             min-height: 100vh;
-            background: var(--primary);
-            color: var(--text-primary);
-            display: flex;
-            flex-direction: column;
+            background: black;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             overflow-x: hidden;
+            perspective: 1000px;
         }
 
-        .premium-container {
-            position: relative;
-            background: linear-gradient(
-                var(--gradient-angle),
-                var(--primary),
-                var(--secondary),
-                var(--accent),
-                var(--highlight)
-            );
-            animation: gradient-rotation 20s linear infinite;
-            padding: 1px;
-            border-radius: 20px;
-        }
-
-        .premium-content {
-            background: var(--primary);
-            border-radius: 19px;
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            padding: 2rem;
-        }
-
-        .header {
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(
+                125deg,
+                #FF00FF 0%,
+                #00FFFF 25%,
+                #00FF9C 50%,
+                #FFE600 75%,
+                #FF00FF 100%
+            );
+            opacity: 0.15;
+            background-size: 400% 400%;
+            animation: cosmic 15s ease infinite;
+            z-index: -1;
         }
 
         .logo {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--highlight), var(--accent));
+            font-size: 4.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin: 2rem 0;
+            background: var(--cosmic-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
+            animation: superGlow 3s ease-in-out infinite;
             position: relative;
+            z-index: 2;
         }
 
         .logo::after {
-            content: '';
+            content: attr(data-text);
             position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, 
-                transparent 40%, 
-                rgba(255, 255, 255, 0.8) 45%,
-                transparent 50%
-            );
-            filter: blur(5px);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--cosmic-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: blur(15px);
+            opacity: 0.8;
+            z-index: -1;
         }
 
         .chat-container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem;
-            width: 95%;
+            padding: 2rem;
+            transform-style: preserve-3d;
         }
 
         .chat-box {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 2rem;
             height: 60vh;
-            background: rgba(42, 9, 68, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 1.5rem;
             overflow-y: auto;
-            scroll-behavior: smooth;
             position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .chat-box::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: var(--cosmic-gradient);
+            border-radius: 32px;
+            z-index: -1;
+            animation: pulse 3s ease-in-out infinite;
         }
 
         .message {
-            margin: 1rem 0;
-            padding: 1.2rem;
-            border-radius: 15px;
-            max-width: 80%;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            border-radius: 25px;
+            color: white;
             position: relative;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            transform-origin: left center;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+            animation: float 6s ease-in-out infinite;
         }
 
         .message::before {
             content: '';
             position: absolute;
-            inset: -1px;
-            background: linear-gradient(var(--gradient-angle), var(--accent), var(--highlight));
-            border-radius: 16px;
+            inset: 0;
+            background: var(--cosmic-gradient);
+            background-size: 200% 200%;
+            animation: cosmic 5s linear infinite;
+            opacity: 0.9;
             z-index: -1;
-            animation: gradient-rotation 3s linear infinite;
         }
 
         .user-message {
             margin-left: auto;
-            background: var(--secondary);
-            color: var(--text-primary);
+            max-width: 80%;
             transform-origin: right center;
         }
 
         .therapist-message {
             margin-right: auto;
-            background: var(--primary);
-            color: var(--text-primary);
+            max-width: 80%;
+            transform-origin: left center;
         }
 
-        .message-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .particle-container {
-            position: absolute;
-            pointer-events: none;
-            z-index: 100;
+        .message:hover {
+            transform: scale(1.05) translateZ(30px);
+            box-shadow: var(--glow-primary), var(--glow-secondary);
         }
 
         .input-wrapper {
             margin-top: 2rem;
             position: relative;
-            padding: 1px;
-            border-radius: 20px;
-            background: linear-gradient(var(--gradient-angle), var(--accent), var(--highlight));
-            animation: gradient-rotation 3s linear infinite;
+            transform-style: preserve-3d;
         }
 
         .input-container {
             display: flex;
             gap: 1rem;
             padding: 0.5rem;
-            background: var(--primary);
-            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-container::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: var(--cosmic-gradient);
+            border-radius: 32px;
+            z-index: -1;
+            animation: cosmic 5s linear infinite;
         }
 
         .message-input {
             flex: 1;
-            padding: 1rem 1.5rem;
+            padding: 1.5rem;
             border: none;
-            border-radius: 15px;
-            background: var(--secondary);
-            color: var(--text-primary);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
             font-size: 1.1rem;
             transition: all 0.3s ease;
         }
 
         .message-input:focus {
             outline: none;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(161, 37, 104, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: var(--glow-primary);
+            transform: translateZ(20px);
         }
 
         .send-button {
-            padding: 1rem 2rem;
+            padding: 1.5rem 3rem;
             border: none;
-            border-radius: 15px;
-            background: linear-gradient(45deg, var(--accent), var(--highlight));
-            color: var(--text-primary);
-            font-weight: 600;
+            border-radius: 20px;
+            background: var(--cosmic-gradient);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .send-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(161, 37, 104, 0.3);
+            transform: translateZ(30px) scale(1.1);
+            box-shadow: var(--glow-primary);
+            animation: superGlow 2s ease-in-out infinite;
         }
 
-        .send-button:active {
-            transform: translateY(1px);
-        }
-
-        .send-button::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, 
-                transparent 40%, 
-                rgba(255, 255, 255, 0.4) 45%,
-                transparent 50%
-            );
-            transform: translateX(-100%);
-        }
-
-        .send-button:hover::after {
-            transform: translateX(100%);
-            transition: transform 0.5s ease;
-        }
-
-        .achievement {
+        /* Particle Effects */
+        .particle {
             position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: linear-gradient(45deg, var(--accent), var(--highlight));
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-        }
-
-        .achievement.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        .reaction {
-            position: absolute;
-            top: -20px;
-            right: -10px;
-            background: var(--highlight);
+            background: white;
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 2;
-        }
-
-        .reaction:hover {
-            transform: scale(1.2);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .floating-element {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .magic-particle {
-            position: absolute;
             pointer-events: none;
-            animation: particleFloat 1.5s ease-out forwards;
-        }
-
-        @keyframes particleFloat {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+            z-index: 9999;
         }
 
         /* Custom Scrollbar */
-        .chat-box::-webkit-scrollbar {
-            width: 8px;
+        ::-webkit-scrollbar {
+            width: 12px;
         }
 
-        .chat-box::-webkit-scrollbar-track {
-            background: var(--primary);
-            border-radius: 4px;
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
         }
 
-        .chat-box::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--accent), var(--highlight));
-            border-radius: 4px;
+        ::-webkit-scrollbar-thumb {
+            background: var(--cosmic-gradient);
+            border-radius: 6px;
+            border: 3px solid transparent;
+            background-clip: content-box;
         }
 
-        .chat-box::-webkit-scrollbar-thumb:hover {
-            background: var(--highlight);
-        }
-
-        .premium-status {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 1000;
-        }
-
-        .streak-counter {
-            background: linear-gradient(45deg, var(--accent), var(--highlight));
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .premium-tier {
-            background: linear-gradient(45deg, var(--premium-gold), var(--premium-shine));
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .crown {
-            font-size: 1.2rem;
-            animation: bounce 1s infinite;
-        }
-
-        .upgrade-button {
-            background: linear-gradient(45deg, var(--accent), var(--highlight));
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 15px;
-            color: var(--text-primary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .upgrade-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            position: relative;
-            background: white;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            border-radius: 20px;
-            color: var(--text-primary);
-        }
-
-        .premium-plans {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .plan {
-            background: linear-gradient(135deg, var(--accent), var(--highlight));
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .plan:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .plan.featured {
-            background: linear-gradient(135deg, var(--premium-gold), var(--premium-shine));
-            transform: scale(1.05);
-        }
-
-        .plan.featured:hover {
-            transform: scale(1.05) translateY(-5px);
-        }
-
-        .best-value {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .plan h3 {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .price {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-
-        .plan ul {
-            list-style: none;
-            margin: 1.5rem 0;
-            text-align: left;
-        }
-
-        .plan li {
-            margin: 0.5rem 0;
-        }
-
-        .plan button {
-            background: white;
-            color: var(--text-primary);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .plan button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--text-primary);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--cosmic-gradient);
+            background-clip: content-box;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1 class="logo">✨ Premium Swiftie Therapy ✨</h1>
-        <p>Where Enchantment Meets Healing</p>
-    </div>
-
-    <div class="premium-status">
-        <div class="streak-counter floating-element">
-            <span>🔥</span>
-            <span id="streakCount">0</span>
-        </div>
-        <div class="premium-tier" id="premiumTier">
-            <span class="crown">👑</span>
-            <span class="tier-name">Free Trial</span>
-            <button class="upgrade-button" onclick="showUpgradeModal()">Upgrade Now!</button>
-        </div>
-    </div>
-
-    <div id="upgradeModal" class="modal">
-        <div class="modal-content">
-            <h2>✨ Unlock Premium Magic ✨</h2>
-            <div class="premium-plans">
-                <div class="plan">
-                    <h3>✨ Enchanted</h3>
-                    <p class="price">$9.99/month</p>
-                    <ul>
-                        <li>✓ Unlimited Therapy Sessions</li>
-                        <li>✓ Custom Themes</li>
-                        <li>✓ Priority Support</li>
-                    </ul>
-                    <button onclick="upgradePlan('enchanted')">Choose Plan</button>
-                </div>
-                <div class="plan featured">
-                    <div class="best-value">Most Popular</div>
-                    <h3>💫 Magical Plus</h3>
-                    <p class="price">$19.99/month</p>
-                    <ul>
-                        <li>✓ All Enchanted Features</li>
-                        <li>✓ AI-Powered Insights</li>
-                        <li>✓ Mood Tracking</li>
-                        <li>✓ Personal Growth Path</li>
-                    </ul>
-                    <button onclick="upgradePlan('magical')">Choose Plan</button>
-                </div>
-                <div class="plan">
-                    <h3>🌟 Legendary</h3>
-                    <p class="price">$29.99/month</p>
-                    <ul>
-                        <li>✓ All Magical Plus Features</li>
-                        <li>✓ 1-on-1 Expert Sessions</li>
-                        <li>✓ Exclusive Content</li>
-                        <li>✓ VIP Support</li>
-                    </ul>
-                    <button onclick="upgradePlan('legendary')">Choose Plan</button>
-                </div>
-            </div>
-            <button class="close-modal" onclick="closeUpgradeModal()">×</button>
-        </div>
-    </div>
-
+    <div class="cosmic-background"></div>
+    
+    <h1 class="logo" data-text="🚀 Swiftie Lyrics Problem Blaster 🚀">
+        🚀 Swiftie Lyrics Problem Blaster 🚀
+    </h1>
+    
     <div class="chat-container">
-        <div class="premium-container">
-            <div class="chat-box" id="chatBox">
-                <div class="message therapist-message animate__animated animate__fadeInLeft">
-                    <div class="message-content">
-                        Welcome to your premium healing space! ✨ Share your thoughts and let's transform them into pure magic together! 
-                        <div class="reaction" onclick="addReaction(this)">💫</div>
-                    </div>
+        <div class="chat-box" id="chatBox">
+            <div class="message therapist-message animate__animated animate__fadeInLeft">
+                <div class="message-content">
+                    ⚡️ Welcome to your consciousness stream space! Let's help turn your thoughts into PURE MAGIC! ✨
                 </div>
             </div>
         </div>
@@ -600,132 +309,103 @@
                 <input 
                     type="text" 
                     class="message-input" 
-                    id="messageInput" 
-                    placeholder="Share your sparkly thoughts..." 
+                    placeholder="✨ Share your electrifying thoughts..." 
                     autofocus
                 >
-                <button class="send-button" onclick="sendMessage()">
-                    Share ✨
+                <button class="send-button">
+                    Blast Off! 🚀
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="achievement" class="achievement">
-        <span id="achievementEmoji"></span>
-        <span id="achievementText"></span>
-    </div>
-
     <script>
-        const responses = [
-            "Your strength shines brighter than any star! ✨ Let's amplify that glow!",
-            "Every step is a dance, every word a song - you're doing amazing! 💫",
-            "Turn that moment into pure magic - you have the power within! 🌟",
-            "Your spirit is like a diamond - unbreakable and brilliant! 💎",
-            "Let's paint your world with glitter and growth! 🎨",
-            "You're writing your story in stardust - make it shimmer! ⭐",
-            "Your heart is a compass pointing to wonderful things! Trust it! 🧭",
-            "Shake off those worries - you're about to sparkle! ✨",
-            "Every cloud has a silver lining, and yours is pure platinum! 🌟",
-            "Keep that crown adjusted - you're royalty in training! 👑"
-        ];
+        // 3D Tilt Effect
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.querySelector('.chat-box').style.transform = 
+                `perspective(1000px) 
+                 rotateX(${(y - 0.5) * 10}deg) 
+                 rotateY(${(x - 0.5) * 10}deg)`;
+        });
 
-        const achievements = [
-            { text: "Opening up is pure magic!", emoji: "✨" },
-            { text: "You're on a healing streak!", emoji: "🔥" },
-            { text: "Emotional breakthrough!", emoji: "💫" },
-            { text: "Growth moment unlocked!", emoji: "🌱" },
-            { text: "Confidence level up!", emoji: "⭐" }
-        ];
-
-        let streak = 0;
-        let lastMessageTime = new Date();
-
-        function updateStreak() {
-            const now = new Date();
-            if (now - lastMessageTime < 300000) { // 5 minutes
-                streak++;
-                document.getElementById('streakCount').textContent = streak;
-                if (streak % 5 === 0) {
-                    showAchievement(`${streak} message streak! Keep shining! ✨`, "🔥");
+        // Particle Trail Effect
+        function createParticle(x, y) {
+            const colors = [
+                '#FF00FF', '#00FFFF', '#00FF9C', 
+                '#FFE600', '#B24BFF', '#FF6B2B'
+            ];
+            
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            
+            document.body.appendChild(particle);
+            
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 5 + 2;
+            const dx = Math.cos(angle) * velocity;
+            const dy = Math.sin(angle) * velocity;
+            
+            let opacity = 1;
+            
+            function animate() {
+                if (opacity <= 0) {
+                    particle.remove();
+                    return;
                 }
-            } else {
-                streak = 1;
+                
+                const currentLeft = parseFloat(particle.style.left);
+                const currentTop = parseFloat(particle.style.top);
+                
+                particle.style.left = `${currentLeft + dx}px`;
+                particle.style.top = `${currentTop + dy}px`;
+                
+                opacity -= 0.02;
+                particle.style.opacity = opacity;
+                
+                requestAnimationFrame(animate);
             }
-            lastMessageTime = now;
-            document.getElementById('streakCount').textContent = streak;
             
-            // Check for premium features unlock
-            if (streak === 3) {
-                showAchievement("You're on fire! Unlock premium features for more magic! ✨", "🌟");
-                showUpgradeModal();
+            animate();
+        }
+
+        let lastX = 0;
+        let lastY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            const distance = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+            
+            if (distance > 20) {
+                createParticle(e.clientX, e.clientY);
+                lastX = e.clientX;
+                lastY = e.clientY;
             }
-        }
+        });
 
-        function showUpgradeModal() {
-            document.getElementById('upgradeModal').style.display = 'block';
-        }
-
-        function closeUpgradeModal() {
-            document.getElementById('upgradeModal').style.display = 'none';
-        }
-
-        function upgradePlan(plan) {
-            const plans = {
-                enchanted: { name: "Enchanted", price: "$9.99" },
-                magical: { name: "Magical Plus", price: "$19.99" },
-                legendary: { name: "Legendary", price: "$29.99" }
-            };
+        // Interactive Elements
+        document.querySelectorAll('.message, .send-button').forEach(element => {
+            element.addEventListener('mouseover', () => {
+                element.style.transform = 'scale(1.05) translateZ(50px)';
+                createParticle(
+                    element.getBoundingClientRect().left + element.offsetWidth / 2,
+                    element.getBoundingClientRect().top + element.offsetHeight / 2
+                );
+            });
             
-            showAchievement(`Welcome to ${plans[plan].name} tier! ✨`, "👑");
-            document.querySelector('.tier-name').textContent = plans[plan].name;
-            closeUpgradeModal();
-            
-            // Create celebration effects
-            const rect = document.querySelector('.premium-tier').getBoundingClientRect();
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    createParticles(
-                        rect.left + Math.random() * rect.width,
-                        rect.top + Math.random() * rect.height,
-                        ["✨", "💫", "⭐", "🌟"][Math.floor(Math.random() * 4)]
-                    );
-                }, i * 100);
-            }
-        }
-
-        function createParticles(x, y, type = '✨') {
-            const particleCount = 10;
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'magic-particle';
-                particle.textContent = type;
-                particle.style.left = x + 'px';
-                particle.style.top = y + 'px';
-                particle.style.setProperty('--tx', `${(Math.random() - 0.5) * 200}px`);
-                particle.style.setProperty('--ty', `${(Math.random() * -200)}px`);
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 1500);
-            }
-        }
-
-        function addReaction(element) {
-            const rect = element.getBoundingClientRect();
-            createParticles(rect.left, rect.top);
-            element.classList.add('animate__animated', 'animate__rubberBand');
-            setTimeout(() => element.classList.remove('animate__animated', 'animate__rubberBand'), 1000);
-        }
-
-        function showAchievement(text, emoji) {
-            const achievement = document.getElementById('achievement');
-            document.getElementById('achievementEmoji').textContent = emoji;
-            document.getElementById('achievementText').textContent = text;
-            achievement.classList.add('show');
-            
-            const rect = achievement.getBoundingClientRect();
-            createParticles(rect.left + rect.width / 2, rect.top);
-            
-            setTimeout(() => achievement.classList.remove('show'), 3000);
-        }
-
-        function addMessage(text, isUser = false)
+            element.addEventListener('mouseout', () => {
+                element.style.transform = 'scale(1) translateZ(0)';
+            });
+        });
+    </script>
+</body>
+</html>
