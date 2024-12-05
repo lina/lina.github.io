@@ -3,21 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Wrapper Ideas Generator</title>
+    <title>✨ GenZ AI Ideas Generator ✨</title>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
         :root {
-            --violet-50: #f5f3ff;
-            --violet-100: #ede9fe;
-            --violet-500: #8b5cf6;
-            --violet-600: #7c3aed;
-            --violet-700: #6d28d9;
-            --violet-900: #4c1d95;
-            --pink-100: #fce7f3;
-            --pink-500: #ec4899;
-            --pink-600: #db2777;
-            --blue-100: #dbeafe;
-            --blue-600: #2563eb;
+            /* Magical Primary Colors */
+            --primary-1: #FF7BF4;  /* Bright Pink */
+            --primary-2: #00E5FF;  /* Electric Blue */
+            --primary-3: #FFC107;  /* Golden Yellow */
+            --primary-4: #7C4DFF;  /* Vibrant Purple */
+            
+            /* Dynamic Gradients using our color palette */
+            --gradient-1: linear-gradient(45deg, var(--primary-1), var(--primary-2), var(--primary-3), var(--primary-1));
+            --gradient-2: linear-gradient(45deg, var(--primary-4), var(--primary-2), var(--primary-1), var(--primary-4));
+            --gradient-3: linear-gradient(45deg, var(--primary-2), var(--primary-3), var(--primary-1), var(--primary-2));
+            
+            /* Shiny effect with more opacity for better visibility */
+            --gradient-shine: linear-gradient(45deg, 
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.3) 50%,
+                rgba(255,255,255,0) 100%);
+
+            /* Background gradient colors */
+            --bg-1: #2A0086;  /* Deep Purple */
+            --bg-2: #00C9FF;  /* Bright Cyan */
+            --bg-3: #FF40B3;  /* Hot Pink */
+            --bg-4: #8E2DE2;  /* Electric Purple */
         }
 
         * {
@@ -28,29 +62,121 @@
         }
 
         body {
-            background: #f8f9fa;
+            background: linear-gradient(-45deg, var(--bg-1), var(--bg-2), var(--bg-3), var(--bg-4));
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
             min-height: 100vh;
             padding: 2rem;
+            color: white;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .feature-tag {
+            background: rgba(184, 192, 255, 0.2) !important;  /* Lighter background */
+            color: #FFFFFF !important;  /* White text */
+            border: 1px solid rgba(184, 192, 255, 0.5) !important;
+            text-shadow: 0 0 10px rgba(184, 192, 255, 0.7) !important;
+            box-shadow: 0 0 15px rgba(184, 192, 255, 0.3) !important;
+            font-weight: 600 !important;
+        }
+
+        .monetization-tag {
+            background: rgba(157, 78, 221, 0.2) !important;  /* Lighter background */
+            color: #FFFFFF !important;  /* White text */
+            border: 1px solid rgba(157, 78, 221, 0.5) !important;
+            text-shadow: 0 0 10px rgba(157, 78, 221, 0.7) !important;
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.3) !important;
+            font-weight: 600 !important;
+        }
+
+        .concept {
+            background: linear-gradient(135deg, var(--primary-4), var(--primary-2)) !important;
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+        }
+
+        .tag {
+            color: white !important;
+            font-weight: 700 !important;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+        }
+
+        .stat-pill {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* .concept {
+            background: linear-gradient(135deg, var(--primary-4), var(--primary-2));
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        } */
+
+        .button-primary {
+            background: var(--gradient-1);
+            box-shadow: 0 10px 30px rgba(255, 123, 244, 0.3);
+        }
+
+        .button-outline {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .toast {
+            background: var(--gradient-1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: sparkle 2s ease-in-out infinite;
         }
 
         .header {
             text-align: center;
             margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
         }
 
         .title {
-            font-size: 3rem;
-            font-weight: bold;
-            background: linear-gradient(to right, var(--pink-500), var(--violet-500));
+            font-size: 4rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 1.5rem;
+            /* margin-bottom: 1.5rem; */
+            animation: gradient 8s ease infinite, rainbow 12s linear infinite;
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
+            letter-spacing: -1px;
         }
 
         .stats-bar {
@@ -59,171 +185,237 @@
             gap: 1rem;
             flex-wrap: wrap;
             margin-bottom: 2rem;
+            perspective: 1000px;
         }
 
         .stat-pill {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
             border-radius: 9999px;
-            font-weight: 600;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .stat-pill:hover {
+            transform: translateY(-5px) rotateX(10deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-color: rgba(255,255,255,0.4);
         }
 
         .card {
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 2rem;
-            border: 2px solid var(--violet-100);
             position: relative;
             overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
         }
 
         .card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(to right, 
-                rgba(236, 72, 153, 0.1),
-                rgba(139, 92, 246, 0.1));
-            z-index: 0;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--gradient-shine);
+            transform: rotate(45deg);
+            animation: shine 6s linear infinite;
+            pointer-events: none;
         }
 
-        .card-content {
-            position: relative;
-            z-index: 1;
+        @keyframes shine {
+            from { transform: translateX(-100%) rotate(45deg); }
+            to { transform: translateX(100%) rotate(45deg); }
         }
 
         .section {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            opacity:1;
+        }
+
+        .section:hover {
+            transform: translateX(10px);
         }
 
         .section-label {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: #666;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
+            gap: 0.75rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .concept {
-            font-size: 1.5rem;
-            font-weight: bold;
-            padding: 1rem;
-            background: var(--violet-50);
-            border-radius: 0.75rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--violet-600), var(--pink-600));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            font-size: 2rem;
+            font-weight: 800;
+            padding: 2rem;
+            background: var(--gradient-2);
+            background-size: 200% 200%;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            animation: gradient 8s ease infinite;
+            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .concept:hover {
+            transform: scale(1.02) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         .tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 1rem;
+            perspective: 1000px;
         }
 
         .tag {
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            transition: transform 0.2s;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            transform-style: preserve-3d;
         }
 
         .tag:hover {
-            transform: scale(1.05);
+            transform: scale(1.1) translateY(-5px) rotateX(10deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: rainbow 12s linear infinite;
         }
 
         .feature-tag {
-            background: var(--violet-100);
-            color: var(--violet-900);
+            background: rgba(0, 242, 255, 0.15);
+            color: #00F2FF;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
         }
 
         .monetization-tag {
-            background: var(--pink-100);
-            color: var(--pink-600);
+            background: rgba(255, 54, 247, 0.15);
+            color: #FF36F7;
+            border: 1px solid rgba(255, 54, 247, 0.3);
+            text-shadow: 0 0 10px rgba(255, 54, 247, 0.5);
         }
 
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 2rem;
+            perspective: 1000px;
         }
 
         .button {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 600;
+            gap: 0.75rem;
+            padding: 1.25rem 3rem;
+            border-radius: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transform-style: preserve-3d;
         }
 
         .button:disabled {
             opacity: 0.7;
             cursor: not-allowed;
+            transform: scale(0.95);
         }
 
         .button-primary {
-            background: var(--violet-600);
+            background: var(--gradient-3);
+            background-size: 200% 200%;
             color: white;
+            animation: gradient 8s ease infinite;
         }
 
         .button-primary:hover:not(:disabled) {
-            background: var(--violet-700);
-            transform: scale(1.05);
+            transform: translateY(-8px) scale(1.05) rotateX(10deg);
+            box-shadow: 0 30px 60px rgba(250, 139, 255, 0.4);
+            animation: gradient 8s ease infinite, rainbow 12s linear infinite;
         }
 
         .button-outline {
             background: transparent;
-            border: 2px solid var(--violet-600);
-            color: var(--violet-600);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
         }
 
         .button-outline:hover:not(:disabled) {
-            background: var(--violet-50);
-            transform: scale(1.05);
+            border-color: rgba(255,255,255,0.8);
+            transform: translateY(-8px) scale(1.05) rotateX(10deg);
+            box-shadow: 0 30px 60px rgba(255,255,255,0.2);
         }
 
         .toast {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background: linear-gradient(to right, var(--violet-600), var(--pink-600));
+            background: var(--gradient-1);
+            background-size: 200% 200%;
             color: white;
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
+            padding: 1.25rem 2.5rem;
+            border-radius: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            animation: slideIn 0.3s ease-out;
+            gap: 1rem;
+            font-weight: 600;
+            animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                       gradient 8s ease infinite,
+                       rainbow 12s linear infinite;
             z-index: 100;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform-style: preserve-3d;
         }
 
         @keyframes slideIn {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { transform: translateX(100%) scale(0.8); opacity: 0; }
+            to { transform: translateX(0) scale(1); opacity: 1; }
         }
 
         .empty-state, .loading-state {
             text-align: center;
-            padding: 4rem 0;
+            padding: 6rem 2rem;
+            color: rgba(255,255,255,0.9);
         }
 
         .icon-large {
-            width: 4rem;
-            height: 4rem;
-            margin-bottom: 1rem;
-            color: var(--violet-500);
+            width: 6rem;
+            height: 6rem;
+            margin-bottom: 2rem;
+            color: white;
+            opacity: 0.9;
+            animation: float 4s ease-in-out infinite;
         }
 
         @keyframes spin {
@@ -233,23 +425,56 @@
         .spin {
             animation: spin 1s linear infinite;
         }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-1);
+            border-radius: 6px;
+            background-size: 200% 200%;
+            animation: gradient 8s ease infinite;
+        }
+
+        /* Confetti animation */
+        @keyframes confetti {
+            0% { transform: translateY(0) rotateZ(0); opacity: 1; }
+            100% { transform: translateY(1000px) rotateZ(720deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--gradient-1);
+            background-size: 200% 200%;
+            animation: confetti 5s ease-in-out infinite;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">AI Wrapper Ideas</h1>
+            <h1 class="title">✨ GenZ AI App Ideas ✨</h1>
             <div class="stats-bar">
-                <div class="stat-pill" style="background: var(--violet-100)">
-                    <i data-lucide="crown" style="width: 1rem; height: 1rem; color: var(--violet-600)"></i>
+                <div class="stat-pill">
+                    <i data-lucide="crown" style="width: 1.5rem; height: 1.5rem; color: #FFD700"></i>
                     <span id="level-text"></span>
                 </div>
-                <div class="stat-pill" style="background: var(--pink-100)">
-                    <i data-lucide="flame" style="width: 1rem; height: 1rem; color: var(--pink-600)"></i>
+                <div class="stat-pill">
+                    <i data-lucide="flame" style="width: 1.5rem; height: 1.5rem; color: #FF3D6C"></i>
                     <span id="streak-text"></span>
                 </div>
-                <div class="stat-pill" style="background: var(--blue-100)">
-                    <i data-lucide="star" style="width: 1rem; height: 1rem; color: var(--blue-600)"></i>
+                <div class="stat-pill">
+                    <i data-lucide="star" style="width: 1.5rem; height: 1.5rem; color: #2BD2FF"></i>
                     <span id="total-text"></span>
                 </div>
             </div>
@@ -264,11 +489,11 @@
         <div class="buttons">
             <button id="generate-btn" class="button button-primary">
                 <i data-lucide="sparkles"></i>
-                Generate Idea
+                Generate Magic
             </button>
             <button id="share-btn" class="button button-outline" disabled>
                 <i data-lucide="share-2"></i>
-                Share
+                Share Magic
             </button>
         </div>
     </div>
@@ -301,19 +526,18 @@
         ];
 
         const features = [
-            "daily streaks", "achievement badges", "level system", "progress tracking",
-            "mystery rewards", "daily challenges", "weekly missions", "custom milestones",
-            "friend battles", "team competitions", "social sharing", "leaderboards",
-            "collaborative tasks", "friend referrals", "community voting", "social feed",
-            "custom themes", "AI avatars", "profile badges", "personal stats",
-            "style presets", "mood tracking", "goal setting", "personal dashboard",
-            "offline mode", "cloud sync", "quick export", "data insights"
+            "✨ daily streaks", "🏆 achievement badges", "⭐️ level system", "📈 progress tracking",
+            "🎁 mystery rewards", "🎯 daily challenges", "🚀 weekly missions", "🌟 custom milestones",
+            "⚔️ friend battles", "🤝 team competitions", "🔄 social sharing", "📊 leaderboards",
+            "🤖 AI avatars", "👥 friend referrals", "🗳️ community voting", "📱 social feed",
+            "🎨 custom themes", "🎭 AI personas", "🏅 profile badges", "📊 personal stats",
+            "🎯 style presets", "🌈 mood tracking", "🎯 goal setting", "📱 personal dashboard"
         ];
 
         const monetization = [
-            "pro subscription", "premium filters", "exclusive themes", "priority features",
-            "limited drops", "creator marketplace", "boost tokens", "premium plugins",
-            "VIP access", "custom badges", "special effects", "advanced analytics"
+            "💎 pro subscription", "✨ premium filters", "🎨 exclusive themes", "🚀 priority features",
+            "🌟 limited drops", "🛍️ creator marketplace", "⚡️ boost tokens", "🔌 premium plugins",
+            "👑 VIP access", "🏆 custom badges", "✨ special effects", "📊 advanced analytics"
         ];
 
         // State
@@ -325,6 +549,21 @@
         };
 
         // Functions
+        function createConfetti() {
+            const colors = ['#FF0080', '#FF8C00', '#40E0D0', '#FA8BFF', '#2BD2FF', '#2BFF88'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.opacity = Math.random();
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
         function getRandomItem(array) {
             return array[Math.floor(Math.random() * array.length)];
         }
@@ -338,7 +577,6 @@
                 `AI ${domain} ${type} ${style}`,
                 `${domain} ${type} that's ${style}`,
                 `${type} for ${domain} ${style}`
-                // `${style} ${domain} ${type}`
             ];
             
             return getRandomItem(templates);
@@ -350,19 +588,19 @@
         }
 
         function getStreakLevel() {
-            if (state.streak >= 50) return { emoji: "👑", title: "LEGENDARY", color: "#eab308" };
-            if (state.streak >= 30) return { emoji: "⚡", title: "EPIC", color: "#a855f7" };
-            if (state.streak >= 20) return { emoji: "🔥", title: "FIRE", color: "#f97316" };
-            if (state.streak >= 10) return { emoji: "✨", title: "RISING", color: "#3b82f6" };
-            return { emoji: "🌟", title: "ROOKIE", color: "#6b7280" };
+            if (state.streak >= 50) return { emoji: "👑", title: "LEGENDARY", color: "#FFD700" };
+            if (state.streak >= 30) return { emoji: "⚡", title: "EPIC", color: "#FF3CAC" };
+            if (state.streak >= 20) return { emoji: "🔥", title: "FIRE", color: "#FF3D6C" };
+            if (state.streak >= 10) return { emoji: "✨", title: "RISING", color: "#2BD2FF" };
+            return { emoji: "🌟", title: "ROOKIE", color: "#6B7280" };
         }
 
         function updateStats() {
             const level = getStreakLevel();
             document.getElementById('level-text').innerHTML = `${level.emoji} Level: ${level.title}`;
             document.getElementById('level-text').style.color = level.color;
-            document.getElementById('streak-text').innerHTML = `Streak: ${state.streak}`;
-            document.getElementById('total-text').innerHTML = `Total: ${state.totalGenerated}`;
+            document.getElementById('streak-text').innerHTML = `Streak: ${state.streak} 🔥`;
+            document.getElementById('total-text').innerHTML = `Total: ${state.totalGenerated} ⭐️`;
         }
 
         function showToast(message) {
@@ -377,16 +615,19 @@
             `;
             document.body.appendChild(toast);
             lucide.createIcons();
-            setTimeout(() => toast.remove(), 2000);
+            setTimeout(() => toast.remove(), 3000);
         }
 
         function renderEmptyState() {
             const content = document.getElementById('card-content');
             content.innerHTML = `
                 <div class="empty-state">
-                    <i data-lucide="brain" class="icon-large"></i>
-                    <p style="font-size: 1.25rem; color: #666;">
-                        Click generate to create your next billion-dollar idea ✨
+                    <i data-lucide="sparkles" class="icon-large"></i>
+                    <p style="font-size: 1.5rem; margin-bottom: 1rem;">
+                        Ready to create something magical? ✨
+                    </p>
+                    <p style="color: rgba(255,255,255,0.7);">
+                        Click generate to unleash your next billion-dollar idea!
                     </p>
                 </div>
             `;
@@ -397,9 +638,12 @@
             const content = document.getElementById('card-content');
             content.innerHTML = `
                 <div class="loading-state">
-                    <i data-lucide="refresh-cw" class="icon-large spin"></i>
-                    <p style="font-size: 1.25rem; color: #666;">
+                    <i data-lucide="loader-2" class="icon-large spin"></i>
+                    <p style="font-size: 1.5rem; margin-bottom: 1rem;">
                         Brewing something legendary... 🚀
+                    </p>
+                    <p style="color: rgba(255,255,255,0.7);">
+                        Preparing your next viral idea!
                     </p>
                 </div>
             `;
@@ -414,7 +658,7 @@
                 <div class="section">
                     <div class="section-label">
                         <i data-lucide="rocket"></i>
-                        Concept
+                        Your Next Big Thing
                     </div>
                     <div class="concept">${state.currentIdea.concept}</div>
                 </div>
@@ -439,14 +683,25 @@
                     <div class="tags">
                         ${state.currentIdea.monetization.map(item => 
                             `<span class="tag monetization-tag">${item}</span>`
-                        ).join('')}
+                        ).join('\n                        ')}
                     </div>
                 </div>
             `;
             lucide.createIcons();
+
+            // Animate elements
+            gsap.from('.section', {
+                duration: 0.8,
+                y: 30,
+                opacity: 1,
+                stagger: 0.2,
+                ease: 'back.out(1.7)'
+            });
         }
 
         function generateIdea() {
+            if (state.isGenerating) return;
+
             state.isGenerating = true;
             state.streak++;
             state.totalGenerated++;
@@ -459,45 +714,43 @@
             
             renderLoadingState();
 
-            // Simulate loading time
             setTimeout(() => {
                 state.currentIdea = {
                     concept: generateConcept(),
                     features: getRandomUniqueItems(features, 6),
-                    monetization: getRandomUniqueItems(monetization, 2)
+                    monetization: getRandomUniqueItems(monetization, 3)
                 };
                 
                 state.isGenerating = false;
                 generateBtn.disabled = false;
                 shareBtn.disabled = false;
                 renderIdea();
-            }, 500);
+                createConfetti();
+            }, 1000);
         }
 
         function shareIdea() {
             if (!state.currentIdea) return;
             
-            const shareText = `Check out this app idea!\n\n${state.currentIdea.concept}\n\nFeatures:\n${state.currentIdea.features.join('\n')}\n\nMonetization:\n${state.currentIdea.monetization.join('\n')}`;
+            const shareText = `✨ Check out this app idea!\n\n🚀 ${state.currentIdea.concept}\n\n🌟 Features:\n${state.currentIdea.features.join('\n')}\n\n💎 Monetization:\n${state.currentIdea.monetization.join('\n')}`;
             
             navigator.clipboard.writeText(shareText)
-                .then(() => showToast('Idea copied to clipboard! 🎉'))
-                .catch(() => showToast('Failed to copy to clipboard'));
+                .then(() => {
+                    showToast('✨ Magic copied to clipboard! ✨');
+                    createConfetti();
+                })
+                .catch(() => showToast('Oops! Failed to copy to clipboard'));
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            // Create Lucide icons
             lucide.createIcons();
-            
-            // Initial render
             updateStats();
             renderEmptyState();
             
-            // Event listeners
             document.getElementById('generate-btn').addEventListener('click', generateIdea);
             document.getElementById('share-btn').addEventListener('click', shareIdea);
         });
     </script>
 </body>
 </html>
-            
