@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Slay Quotes - Your Daily Pop of Joy ✨</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        :root {
+            --primary: #ff69b4;
+            --secondary: #4dd0e1;
+            --bg-start: #ffe6f2;
+            --bg-end: #e6f9fc;
+            --glass: rgba(255, 255, 255, 0.25);
+            --border: rgba(255, 255, 255, 0.18);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ff6b6b, #ff9f9f, #6b8fff, #9f6bff, #ff6bd5);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+
+        body.theme-neon {
+            background: linear-gradient(-45deg, #00ff87, #60efff, #ff00ff, #ff8d00);
+            background-size: 400% 400%;
+        }
+
+        body.theme-sunset {
+            background: linear-gradient(-45deg, #ff512f, #ff758c, #ff8c69, #ffd700);
+            background-size: 400% 400%;
+        }
+
+        body.theme-galaxy {
+            background: linear-gradient(-45deg, #7f00ff, #4a148c, #311b92, #1a237e);
+            background-size: 400% 400%;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 
+                0 8px 32px 0 rgba(31, 38, 135, 0.37),
+                0 0 10px rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-text {
+            font-size: 2rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .quote-author {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--primary); }
+            50% { text-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px var(--primary); }
+            100% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--primary); }
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 2rem 0;
+            color: white;
+            text-shadow: 
+                0 0 10px rgba(255,255,255,0.8),
+                0 0 20px rgba(255,255,255,0.8),
+                0 0 30px rgba(255,255,255,0.8);
+            animation: neonPulse 2s ease-in-out infinite;
+        }
+
+        .theme-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 1rem 0;
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255,255,255,0.8);
+        }
+
+        .theme-neon-btn {
+            background: linear-gradient(45deg, #00ff87, #60efff);
+        }
+
+        .theme-sunset-btn {
+            background: linear-gradient(45deg, #ff512f, #ff758c);
+        }
+
+        .theme-galaxy-btn {
+            background: linear-gradient(45deg, #7f00ff, #4a148c);
+        }
+
+        .mood-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 2rem 0;
+        }
+
+        .mood-button {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .mood-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 10px 20px rgba(0,0,0,0.1),
+                0 0 15px rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .mood-button.active {
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 
+                0 10px 20px rgba(0,0,0,0.2),
+                0 0 30px rgba(255,255,255,0.8);
+            transform: translateY(-5px);
+        }
+
+        .button {
+            background: linear-gradient(45deg, #ff69b4, #4dd0e1);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            margin: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+
+        .button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.2),
+                0 0 30px rgba(255,255,255,0.8);
+        }
+
+        .likes-counter {
+            margin-top: 1rem;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .heart-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .heart-btn:hover {
+            transform: scale(1.3);
+        }
+
+        @keyframes sparkleFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.7; }
+        }
+
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            animation: sparkleFloat 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            z-index: 1000;
+        }
+        .sound-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .quote-text { font-size: 1.5rem; }
+            .mood-button { padding: 0.8rem 1.5rem; }
+            .button { padding: 1rem 2rem; }
+            .quote-card { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- <button class="sound-toggle" id="soundToggle">🔊</button> -->
+    <div class="container">
+        <div class="theme-switcher">
+            <button class="theme-btn theme-neon-btn" data-theme="neon" title="Neon Theme"></button>
+            <button class="theme-btn theme-sunset-btn" data-theme="sunset" title="Sunset Theme"></button>
+            <button class="theme-btn theme-galaxy-btn" data-theme="galaxy" title="Galaxy Theme"></button>
+        </div>
+
+        <h1 class="animate__animated ">✨ Slay Quotes ✨</h1>
+        
+        <div class="mood-buttons">
+            <button class="mood-button active">💅 Boss Energy</button>
+            <button class="mood-button">🦋 Self Love</button>
+            <button class="mood-button">💖 BFF Vibes</button>
+            <button class="mood-button">😌 Zen AF</button>
+            <button class="mood-button">💪 Motivation</button>
+        </div>
+
+        <div class="quote-card">
+            <p class="quote-text" id="quote-text">bestie, you're literally glowing from within rn ✨</p>
+            <p class="quote-author" id="quote-author">inner peace</p>
+            <div class="likes-counter">
+                <button class="heart-btn" id="like-btn">❤️</button>
+                <span id="likes-count">3892</span>
+            </div>
+        </div>
+
+        <button class="button" id="new-quote">✨ New Quote ✨</button>
+    </div>
+
+    <script>
+        // Quote data
+        const quotes = {
+            "Boss Energy": [
+                { text: "girlboss tip: you're literally that girl, periodt 💅", author: "the universe", likes: 2438 },
+                { text: "they're not ghosting you, you're just too iconic for their energy 👑", author: "facts", likes: 3892 },
+                { text: "bestie, your success is making them so mad rn and i love that for you", author: "the timeline", likes: 5231 },
+                { text: "sorry i can't hear the haters over the sound of my own slay", author: "main character energy", likes: 4127 },
+                { text: "plot twist: you're the moment they've been waiting for", author: "the tea", likes: 3654 },
+                { text: "CEO behavior detected and honestly? we love to see it 💼", author: "career goals", likes: 4521 },
+                { text: "your success story? it's giving main character energy fr fr 📈", author: "plot twist", likes: 3987 },
+                { text: "bestie, you're not just in your bag, you ARE the bag 💅", author: "money mindset", likes: 4892 },
+                { text: "them: why are you so confident? you: bestie i woke up like this 💁‍♀️", author: "confidence check", likes: 5129 },
+                { text: "not me catching you in your villain era and absolutely living for it 😈", author: "boss moves", likes: 4762 },
+                { text: "girlboss tip: toxic productivity is out, strategic slaying is in 💫", author: "hustle culture", likes: 4891 },
+                { text: "you're not networking, you're building your empire's alliance 👑", author: "boss thoughts", likes: 5632 },
+                { text: "caught in 4k: being an absolute icon at everything you do ✨", author: "success stories", likes: 4321 },
+                { text: "bestie check: still eating up the competition? as you should 💅", author: "winning energy", likes: 6543 },
+                { text: "your success is not a fluke, it's literally just the blueprint 📝", author: "facts only", likes: 5432 }
+            ],
+            "Self Love": [
+                { text: "reminder: you've never been more of a material gworl than today 💅✨", author: "your inner icon", likes: 4521 },
+                { text: "bestie check: still that girl? always have been 💁‍♀️", author: "the mirror", likes: 3987 },
+                { text: "living rent free in everyone's mind and honestly? as you should 💅", author: "your vibe", likes: 6234 },
+                { text: "literally no one is doing it like you. and that's on periodt 💅", author: "facts only", likes: 4892 },
+                { text: "you're not too much, they're just not enough 💁‍♀️", author: "the truth", likes: 5129 },
+                { text: "pov: you're the moment, the vibe, and the energy ✨", author: "main character vibes", likes: 4127 },
+                { text: "bestie your aura is giving goddess energy rn and i'm here for it 🌟", author: "energy check", likes: 5231 },
+                { text: "not me catching you being an absolute icon again 👑", author: "daily reminder", likes: 3892 },
+                { text: "plot twist: you were the slay all along 💅", author: "self discovery", likes: 4762 },
+                { text: "me to me: girl you're literally so mother for this 💁‍♀️", author: "inner dialogue", likes: 4891 },
+                { text: "friendly reminder that you're that girl, that's the tweet 💫", author: "period thoughts", likes: 5632 },
+                { text: "bestie your self care era is giving everything it needs to give ✨", author: "wellness check", likes: 4321 },
+                { text: "caught myself being iconic again, oops i mean existing 💅", author: "daily mood", likes: 6543 },
+                { text: "me: *exists* also me: wow she's literally so mother for this 👑", author: "self appreciation", likes: 5432 },
+                { text: "not to be dramatic but you're literally the moment rn 💫", author: "current status", likes: 4521 }
+            ],
+            "BFF Vibes": [
+                { text: "your bestie's success is your success, we're all getting that bag 👯‍♀️", author: "squad goals", likes: 3876 },
+                { text: "there's literally nothing better than hyping up your bestie 💕", author: "friendship manual", likes: 4532 },
+                { text: "real ones match your energy and add to it ✨", author: "besties forever", likes: 3987 },
+                { text: "tag your bestie, she needs to hear this: you're both that girl 💅", author: "bff energy", likes: 5234 },
+                { text: "girls who support girls get extra karma points, periodt 💕", author: "the rulebook", likes: 4321 },
+                { text: "bestie check: still slaying together? absolutely 👯‍♀️", author: "friendship goals", likes: 4127 },
+                { text: "pov: watching your bestie in her villain era and being so proud 💕", author: "bff support", likes: 5231 },
+                { text: "me and my bestie trading positive affirmations like pokemon cards ✨", author: "friendship vibes", likes: 3892 },
+                { text: "when your bestie's winning, you're winning, periodt 💅", author: "squad mentality", likes: 4762 },
+                { text: "bestie alignment check: still iconic? always have been 👑", author: "friendship test", likes: 4891 },
+                { text: "me hyping up my bestie for literally just existing: as i should 💕", author: "support system", likes: 5632 },
+                { text: "caught my bestie being an absolute queen again, typical behavior 👑", author: "friendship diary", likes: 4321 },
+                { text: "bestie duo status: eating up the competition fr fr 💅", author: "power duo", likes: 6543 },
+                { text: "me and my bestie manifesting our best lives together ✨", author: "manifestation buddies", likes: 5432 },
+                { text: "friendship status: still that iconic duo everyone talks about 💫", author: "duo goals", likes: 4521 }
+            ],
+            "Zen AF": [
+                { text: "it's giving unbothered, unproblematic, flourishing ✨", author: "your peace", likes: 3654 },
+                { text: "literally just vibing and manifesting, as we should 🦋", author: "zen thoughts", likes: 4127 },
+                { text: "your energy is immaculate and they can stay mad about it 😌", author: "good vibes only", likes: 5231 },
+                { text: "bestie, you're literally glowing from within rn ✨", author: "inner peace", likes: 3892 },
+                { text: "the universe said 'she needs her moment' and here you are ⭐", author: "cosmic vibes", likes: 4762 },
+                { text: "pov: you're in your peace era and everything is aligning ✨", author: "zen master", likes: 4891 },
+                { text: "me: *breathes* the universe: girl you're doing amazing sweetie 🌟", author: "spiritual tea", likes: 5632 },
+                { text: "bestie your aura is literally cleansing my timeline rn 🧘‍♀️", author: "energy healer", likes: 4321 },
+                { text: "not me catching good vibes and passing them on like it's my job 🦋", author: "vibe check", likes: 6543 },
+                { text: "manifesting? completed it bestie ✨", author: "law of attraction", likes: 5432 },
+                { text: "my toxic trait? being too blessed to be stressed 💆‍♀️", author: "unbothered vibes", likes: 4521 },
+                { text: "caught in 4k: literally just vibing and thriving 🌸", author: "peace protocol", likes: 3987 },
+                { text: "me to my anxiety: bestie we don't do that here 🧘‍♀️", author: "zen zone", likes: 4892 },
+                { text: "plot twist: you were the good vibes all along ✨", author: "energy shift", likes: 5129 },
+                { text: "living my best life and honestly? it's giving main character energy 💫", author: "peaceful era", likes: 4762 }
+            ],
+            "Motivation": [
+                { text: "wake up bestie, it's time to choose violence (against your goals) 💪", author: "monday energy", likes: 4891 },
+                { text: "you didn't come this far to only come this far 💅", author: "motivation check", likes: 5632 },
+                { text: "they're not ready for this character development arc 📈", author: "your potential", likes: 4321 },
+                { text: "plot twist: you're the main character and this is your season 💫", author: "the storyline", likes: 6543 },
+                { text: "excuse me? your crown is slipping, bestie. let me fix that 👑", author: "success loading...", likes: 5432 },
+                { text: "bestie check: still in your growth era? we love to see it 📈", author: "growth mindset", likes: 4521 },
+                { text: "pov: watching yourself level up and being so proud 💪", author: "character arc", likes: 3987 },
+                { text: "me to my goals: you're not ready for what's about to hit you 💅", author: "goal crusher", likes: 4892 },
+                { text: "caught myself leveling up again, oops my bad 💫", author: "level up diary", likes: 5129 },
+                { text: "not to flex but my character development arc? legendary behavior 📈", author: "progress report", likes: 4762 },
+                { text: "bestie your potential is literally giving main character energy rn 💫", author: "potential check", likes: 4891 },
+                { text: "me to my future self: girl you're not ready for this glow up 💅", author: "future vibes", likes: 5632 },
+                { text: "plot twist: the grind never stops, it just gets more iconic 💪", author: "grind time", likes: 4321 },
+                { text: "motivation check: still that girl? always have been 👑", author: "daily affirmation", likes: 6543 },
+                { text: "caught the universe plotting my success again, we love to see it ✨", author: "success story", likes: 5432 }
+            ]
+        };
+
+        let currentMood = "Boss Energy";
+        let soundEnabled = true;
+
+
+        // DOM elements
+        const quoteText = document.getElementById("quote-text");
+        const quoteAuthor = document.getElementById("quote-author");
+        const likesCount = document.getElementById("likes-count");
+        const newQuoteBtn = document.getElementById("new-quote");
+        const moodButtons = document.querySelectorAll(".mood-button");
+        const likeBtn = document.getElementById("like-btn");
+        const themeButtons = document.querySelectorAll(".theme-btn");
+        const soundToggle = document.getElementById("soundToggle");
+        
+        // Sound effects (base64 encoded for simplicity)
+        const sounds = {
+            click: new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgA"),
+            success: new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgA"),
+            achievement: new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgA")
+        };
+
+        function createSparkles() {
+            const colors = ['#FFD700', '#FF69B4', '#00FFFF', '#FF1493', '#7FFFD4'];
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.innerHTML = ['✨', '💫', '⭐️', '🌟'][Math.floor(Math.random() * 4)];
+                    sparkle.style.left = `${Math.random() * window.innerWidth}px`;
+                    sparkle.style.top = `${Math.random() * window.innerHeight}px`;
+                    sparkle.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => sparkle.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
+        function showNewQuote() {
+            const moodQuotes = quotes[currentMood];
+            const randomQuote = moodQuotes[Math.floor(Math.random() * moodQuotes.length)];
+            
+            quoteText.textContent = randomQuote.text;
+            quoteAuthor.textContent = randomQuote.author;
+            likesCount.textContent = randomQuote.likes;
+            
+            createSparkles();
+        }
+
+        // Event listeners
+        moodButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                moodButtons.forEach(btn => btn.classList.remove("active"));
+                button.classList.add("active");
+                currentMood = button.textContent.trim().split(" ").slice(1).join(" ");
+                showNewQuote();
+            });
+        });
+
+        newQuoteBtn.addEventListener("click", () => {
+            const card = document.querySelector(".quote-card");
+            card.style.transform = "translateX(-100%)";
+            card.style.opacity = "0";
+            
+            setTimeout(() => {
+                showNewQuote();
+                card.style.transform = "translateX(0)";
+                card.style.opacity = "1";
+            }, 300);
+            
+            createSparkles();
+        });
+
+        likeBtn.addEventListener("click", () => {
+            const count = parseInt(likesCount.textContent);
+            likesCount.textContent = count + 1;
+            
+            likeBtn.style.transform = "scale(1.3)";
+            createSparkles();
+            
+            setTimeout(() => {
+                likeBtn.style.transform = "scale(1)";
+            }, 200);
+        });
+
+        themeButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const theme = btn.dataset.theme;
+                document.body.className = `theme-${theme}`;
+                createSparkles();
+                
+                // Create a ripple effect
+                const ripple = document.createElement("div");
+                ripple.style.position = "fixed";
+                ripple.style.top = "50%";
+                ripple.style.left = "50%";
+                ripple.style.transform = "translate(-50%, -50%)";
+                ripple.style.width = "10px";
+                ripple.style.height = "10px";
+                ripple.style.borderRadius = "50%";
+                ripple.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
+                ripple.style.animation = "ripple 1s ease-out forwards";
+                document.body.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 1000);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement("style");
+        style.textContent = `
+            @keyframes ripple {
+                0% {
+                    width: 10px;
+                    height: 10px;
+                    opacity: 1;
+                }
+                100% {
+                    width: 200vw;
+                    height: 200vw;
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+         // Sound management
+         function playSound(type) {
+            if (soundEnabled) {
+                sounds[type].currentTime = 0;
+                sounds[type].play().catch(() => {}); // Ignore autoplay restrictions
+            }
+        }
+
+        // Initialize
+        showNewQuote();
+        createSparkles();
+
+        // Easter egg: Double click anywhere for extra sparkles
+        document.addEventListener("dblclick", () => {
+            createSparkles();
+            createSparkles(); // Double the sparkles!
+        });
+
+        // Add some floating particles in the background
+        function createFloatingParticle() {
+            const particle = document.createElement("div");
+            particle.className = "sparkle";
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = "100vh";
+            particle.style.opacity = "0.5";
+            particle.innerHTML = ["✨", "💫", "⭐️", "🌟"][Math.floor(Math.random() * 4)];
+            particle.style.animation = `sparkleFloat ${5 + Math.random() * 5}s linear`;
+            document.body.appendChild(particle);
+            
+            particle.addEventListener("animationend", () => particle.remove());
+        }
+
+        // Create background particles periodically
+        setInterval(createFloatingParticle, 1000);
+
+        // Add hover effect to quote card
+        const quoteCard = document.querySelector(".quote-card");
+        quoteCard.addEventListener("mousemove", (e) => {
+            const rect = quoteCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+            
+            quoteCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        quoteCard.addEventListener("mouseleave", () => {
+            quoteCard.style.transform = "perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)";
+        });
+
+        // Add share functionality with cool animations
+        const shareButtons = document.querySelectorAll(".share-btn");
+        if (shareButtons.length > 0) {
+            shareButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    // Create a success message element
+                    const successMsg = document.createElement("div");
+                    successMsg.style.position = "fixed";
+                    successMsg.style.top = "20px";
+                    successMsg.style.left = "50%";
+                    successMsg.style.transform = "translateX(-50%)";
+                    successMsg.style.background = "rgba(255, 255, 255, 0.9)";
+                    successMsg.style.padding = "1rem 2rem";
+                    successMsg.style.borderRadius = "20px";
+                    successMsg.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)";
+                    successMsg.style.zIndex = "1000";
+                    successMsg.style.animation = "slideDown 0.3s ease forwards";
+
+                    // Handle different share actions
+                    switch (btn.dataset.action) {
+                        case "copy":
+                            const textToCopy = `${quoteText.textContent} - ${quoteAuthor.textContent}`;
+                            navigator.clipboard.writeText(textToCopy)
+                                .then(() => {
+                                    successMsg.textContent = "✨ Quote copied to clipboard! ✨";
+                                })
+                                .catch(() => {
+                                    successMsg.textContent = "Oops! Couldn't copy quote 😢";
+                                });
+                            break;
+                        case "instagram":
+                            successMsg.textContent = "📸 Opening Instagram story...";
+                            break;
+                        case "tiktok":
+                            successMsg.textContent = "📱 Opening TikTok...";
+                            break;
+                    }
+
+                    document.body.appendChild(successMsg);
+                    createSparkles();
+
+                    setTimeout(() => {
+                        successMsg.style.animation = "slideUp 0.3s ease forwards";
+                        setTimeout(() => successMsg.remove(), 300);
+                    }, 2000);
+                });
+            });
+        }
+
+        // Add achievement system
+        let achievementCount = 0;
+        function showAchievement(message) {
+            achievementCount++;
+            
+            const achievement = document.createElement("div");
+            achievement.style.position = "fixed";
+            achievement.style.bottom = "20px";
+            achievement.style.right = "20px";
+            achievement.style.background = "linear-gradient(45deg, var(--primary), var(--secondary))";
+            achievement.style.color = "white";
+            achievement.style.padding = "1rem";
+            achievement.style.borderRadius = "15px";
+            achievement.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.2)";
+            achievement.style.animation = "slideIn 0.5s ease forwards";
+            achievement.style.zIndex = "1000";
+            achievement.textContent = message;
+
+            document.body.appendChild(achievement);
+            createSparkles();
+            playSound("achievement");
+            setTimeout(() => {
+                achievement.style.animation = "slideOut 0.5s ease forwards";
+                setTimeout(() => achievement.remove(), 500);
+            }, 3000);
+
+            // Special achievements
+            if (achievementCount === 10) {
+                showAchievement("🎉 Achievement Unlocked: Quote Master!");
+            }
+        }
+        // Share functionality
+        function shareQuote(platform) {
+            const quote = `${quoteText.textContent} - ${quoteAuthor.textContent}`;
+            
+            switch (platform) {
+                case "copy":
+                    navigator.clipboard.writeText(quote)
+                        .then(() => showSuccessMessage("Quote copied to clipboard! ✨"))
+                        .catch(() => showSuccessMessage("Oops! Couldn't copy quote 😢"));
+                    break;
+                case "instagram":
+                    showSuccessMessage("Opening Instagram story... 📸");
+                    break;
+                case "tiktok":
+                    showSuccessMessage("Opening TikTok... 📱");
+                    break;
+            }
+            
+            playSound("success");
+            createSparkles();
+        }
+        // Confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = Math.random() * 100 + "vw";
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                confetti.innerHTML = ["🌟", "✨", "💫", "⭐️", "🎉"][Math.floor(Math.random() * 5)];
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+            playSound("achievement");
+        }
+
+        // Add scroll-based parallax effect to sparkles
+        window.addEventListener("scroll", () => {
+            const sparkles = document.querySelectorAll(".sparkle");
+            const scrolled = window.pageYOffset;
+            sparkles.forEach(sparkle => {
+                const speed = parseFloat(sparkle.dataset.speed) || 0.5;
+                sparkle.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Initialize with some sparkles
+        for (let i = 0; i < 5; i++) {
+            createFloatingParticle();
+        }
+    </script>
+</body>
+</html>
