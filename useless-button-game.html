@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Useless Button Game</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes floating-bubbles {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        .message-animate {
+            animation: bounce 1s infinite;
+        }
+        
+        .combo-animate {
+            animation: pulse 1s infinite;
+        }
+        
+        .button-animate {
+            animation: bounce 1s;
+        }
+        
+        .rainbow-bg {
+            background: linear-gradient(-45deg, #FF0099, #00FF99, #00CCFF, #FF66CC);
+            background-size: 400% 400%;
+            animation: gradient-animation 10s ease infinite;
+        }
+        
+        .normal-bg {
+            background: linear-gradient(-45deg, #FF6B6B, #4ECDC4, #45B7D1, #96E6B3);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            backdrop-filter: blur(5px);
+            animation: floating-bubbles 8s infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(-25%) scale(1.1);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateY(0) scale(1);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: .9;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.2);
+            }
+            to {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        .icon-spin {
+            animation: spin 3s ease-in-out infinite;
+        }
+
+        .button-container {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #useless-button {
+            background: linear-gradient(-45deg, #FF0099, #00FF99);
+            background-size: 200% 200%;
+            animation: gradient-animation 5s ease infinite;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #useless-button:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .game-container {
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .stat-display {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-display:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div id="bubble-container"></div>
+    <div id="game-container" class="game-container relative w-full max-w-2xl h-96 rounded-lg p-8 overflow-hidden transition-all duration-500 normal-bg">
+        <!-- Level Display -->
+        <div class="absolute top-4 left-4 stat-display px-4 py-2 rounded-full shadow-lg">
+            <div class="flex items-center gap-2">
+                <i data-lucide="crown" class="w-5 h-5 text-yellow-400"></i>
+                <span class="font-bold text-white">Level 1</span>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <div id="button-container" class="absolute" style="left: 50%; top: 50%;">
+            <button id="useless-button" 
+                class="px-8 py-4 text-xl font-bold text-white 
+                       rounded-full shadow-lg transform
+                       transition-all duration-300 ease-in-out">
+                Click Me! ✨
+            </button>
+        </div>
+
+        <!-- Message Display -->
+        <div id="message-display" class="absolute top-16 left-4"></div>
+
+        <!-- Combo Display -->
+        <div id="combo-display" class="absolute top-4 right-4"></div>
+
+        <!-- Click Counter -->
+        <div class="absolute bottom-4 right-4 stat-display px-4 py-2 rounded-full shadow-lg">
+            <div class="flex items-center gap-2">
+                <i data-lucide="zap" class="w-5 h-5 text-yellow-400"></i>
+                <span id="click-counter" class="font-bold text-white">0 Clicks</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        window.addEventListener('load', function() {
+            lucide.createIcons();
+            createBubbles();
+        });
+
+        function createBubbles() {
+            const bubbleContainer = document.getElementById('bubble-container');
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.width = Math.random() * 100 + 50 + 'px';
+                bubble.style.height = bubble.style.width;
+                bubble.style.left = Math.random() * 100 + 'vw';
+                bubble.style.top = Math.random() * 100 + 'vh';
+                bubble.style.animationDelay = Math.random() * 5 + 's';
+                bubbleContainer.appendChild(bubble);
+            }
+        }
+
+        // Constants
+        const CLICKS_PER_LEVEL = 10;
+        const COMBO_THRESHOLD = 500;
+
+        // State
+        let state = {
+            clicks: 0,
+            level: 1,
+            comboCount: 0,
+            lastClickTime: Date.now(),
+            position: { x: 50, y: 50 }
+        };
+
+        const messages = [
+            { text: "Error 404: Button is on vacation 🏖️", icon: 'ghost', rarity: 'common' },
+            { text: "Warning: Button is having an existential crisis 🤔", icon: 'alert-triangle', rarity: 'common' },
+            { text: "EPIC WIN! Nothing happened! 🎉", icon: 'thumbs-up', rarity: 'rare' },
+            { text: "Loading personality... please wait 84 years ⌛", icon: 'coffee', rarity: 'common' },
+            { text: "LEGENDARY: Button achieved enlightenment! ✨", icon: 'crown', rarity: 'legendary' },
+            { text: "ACHIEVEMENT UNLOCKED: Master Button Clicker! 🏆", icon: 'trophy', rarity: 'rare' },
+            { text: "Button is dropping sick beats! 🎵", icon: 'music', rarity: 'common' },
+            { text: "Button thinks you're awesome! 💖", icon: 'heart', rarity: 'rare' },
+            { text: "COMBO MODE ACTIVATED! 🔥", icon: 'zap', rarity: 'rare' },
+            { text: "You've discovered a diamond button! 💎", icon: 'diamond', rarity: 'legendary' }
+        ];
+
+        // DOM Elements
+        const gameContainer = document.getElementById('game-container');
+        const buttonContainer = document.getElementById('button-container');
+        const messageDisplay = document.getElementById('message-display');
+        const comboDisplay = document.getElementById('combo-display');
+        const clickCounter = document.getElementById('click-counter');
+
+        function getRandomPosition() {
+            return {
+                x: Math.random() * 80 + 10,
+                y: Math.random() * 80 + 10
+            };
+        }
+
+        function showMessage(message) {
+            const rarityColors = {
+                common: 'bg-white',
+                rare: 'bg-gradient-to-r from-blue-200 to-purple-200',
+                legendary: 'bg-gradient-to-r from-yellow-200 via-yellow-300 to-yellow-200'
+            };
+
+            messageDisplay.innerHTML = `
+                <div class="flex items-center gap-2 p-4 rounded-lg shadow-lg message-animate ${rarityColors[message.rarity]}">
+                    <i data-lucide="${message.icon}" class="w-6 h-6 ${message.rarity === 'legendary' ? 'icon-spin' : ''}"></i>
+                    <span class="font-bold">${message.text}</span>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function updateComboDisplay() {
+            if (state.comboCount >= 3) {
+                comboDisplay.innerHTML = `
+                    <div class="bg-gradient-to-r from-orange-400 to-red-500 text-white px-4 py-2 rounded-full combo-animate shadow-lg">
+                        <span class="font-bold">${state.comboCount}x COMBO! 🔥</span>
+                    </div>
+                `;
+            } else {
+                comboDisplay.innerHTML = '';
+            }
+        }
+
+        function updateLevel() {
+            const newLevel = Math.floor(state.clicks / CLICKS_PER_LEVEL) + 1;
+            if (newLevel !== state.level) {
+                state.level = newLevel;
+                document.querySelector('.left-4 .font-bold').textContent = `Level ${state.level}`;
+                
+                showMessage({ 
+                    text: `🎖️ LEVEL ${state.level} ACHIEVED! Keep going! 🎖️`, 
+                    icon: 'crown', 
+                    rarity: 'legendary' 
+                });
+
+                gameContainer.classList.add('rainbow-bg');
+                gameContainer.classList.remove('normal-bg');
+                setTimeout(() => {
+                    gameContainer.classList.remove('rainbow-bg');
+                    gameContainer.classList.add('normal-bg');
+                }, 2000);
+            }
+        }
+
+        function handleClick() {
+            const now = Date.now();
+            const timeDiff = now - state.lastClickTime;
+
+            if (timeDiff < COMBO_THRESHOLD) {
+                state.comboCount++;
+            } else {
+                state.comboCount = 0;
+            }
+            state.lastClickTime = now;
+
+            state.clicks++;
+            clickCounter.textContent = `${state.clicks} Clicks`;
+
+            updateLevel();
+            updateComboDisplay();
+
+            // Message selection based on rarity
+            const roll = Math.random();
+            let pool;
+            if (roll < 0.1) {
+                pool = messages.filter(m => m.rarity === 'legendary');
+            } else if (roll < 0.3) {
+                pool = messages.filter(m => m.rarity === 'rare');
+            } else {
+                pool = messages.filter(m => m.rarity === 'common');
+            }
+            
+            const randomMessage = pool[Math.floor(Math.random() * pool.length)];
+            showMessage(randomMessage);
+
+            if (state.clicks % 3 === 0) {
+                buttonContainer.classList.add('button-animate');
+                setTimeout(() => buttonContainer.classList.remove('button-animate'), 1000);
+                
+                const newPos = getRandomPosition();
+                buttonContainer.style.left = `${newPos.x}%`;
+                buttonContainer.style.top = `${newPos.y}%`;
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('useless-button').addEventListener('click', handleClick);
+    </script>
+</body>
+</html>
